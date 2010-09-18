@@ -47,7 +47,7 @@ function insert_tag($tag, $topic_id){
 	$result = $db->sql_query($sql);
 
 	$row = $db->sql_fetchrow($result);
-	if($row !== false)
+	if($row != null)
 	{
 		return false;
 	}

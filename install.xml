@@ -56,15 +56,24 @@ CREATE TABLE phpbb_tags (
   PRIMARY KEY  (topic_id,tag)
 );
 	</sql>
-	<sql dbms="mysql">
-INSERT INTO phpbb_config (config_name,config_value,is_dynamic)VALUES ('pbf_on', '1', '0');
-INSERT INTO phpbb_config (config_name,config_value,is_dynamic)VALUES ('pbf_index_tags', '60', '0');
-INSERT INTO phpbb_config (config_name,config_value,is_dynamic)VALUES ('pbf_index_tag_cloud', '1', '0');
-INSERT INTO phpbb_config (config_name,config_value,is_dynamic)VALUES ('pbf_topic_tags', '60', '0');
-INSERT INTO phpbb_config (config_name,config_value,is_dynamic)VALUES ('pbf_topic_tagcloud', '1', '0');
-INSERT INTO phpbb_config (config_name,config_value,is_dynamic)VALUES ('pbf_min_font', '9', '0');
-INSERT INTO phpbb_config (config_name,config_value,is_dynamic)VALUES ('pbf_max_font', '30', '0');
-	</sql>
+    <sql dbms="mysql">
+INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('pbf_on', '1', '0');
+    </sql>
+    <sql dbms="mysql">
+INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('pbf_tags', '60', '0');
+    </sql>
+    <sql dbms="mysql">
+INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('pbf_min_font', '9', '0');
+    </sql>
+    <sql dbms="mysql">
+INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('pbf_max_font', '28', '0');
+    </sql>
+    <sql dbms="mysql">
+INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('pbf_colour1', '#779FBF', '0');
+    </sql>
+    <sql dbms="mysql">
+INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('pbf_colour2', '#779FBF', '0');
+    </sql>
 	<copy>
 		<file from="root/phpBBFolk.php" to="phpBBFolk.php" />
 		<file from="root/phpBBFolk.js" to="phpBBFolk.js" />
@@ -78,7 +87,7 @@ INSERT INTO phpbb_config (config_name,config_value,is_dynamic)VALUES ('pbf_max_f
 		<file from="root/includes/acp/acp_phpBBFolk.php" to="includes/acp/acp_phpBBFolk.php" />
 		<file from="root/includes/acp/info/acp_phpBBFolk.php" to="includes/acp/info/acp_phpBBFolk.php" />
 		
-		<file from="root/languages/en/mods/phpBBFolk_lang.php" to="languages/en/mods/phpBBFolk_lang.php" />
+		<file from="root/language/en/mods/phpBBFolk_lang.php" to="language/en/mods/phpBBFolk_lang.php" />
 		
 		<file from="root/styles/prosilver/template/phpBBFolk_input.html" 
 			  to="styles/prosilver/template/phpBBFolk_input.html" />
@@ -100,9 +109,7 @@ INSERT INTO phpbb_config (config_name,config_value,is_dynamic)VALUES ('pbf_max_f
 
 	<open src="common.php">
 		<edit>
-			<find><![CDATA[
-?>		
-			]]></find>
+			<find><![CDATA[?>]]></find>
 			<action type="before-add"><![CDATA[
 //phpBBFolk MOD
 include($phpbb_root_path . 'includes/functions_phpBBFolk.' . $phpEx);
@@ -115,31 +122,25 @@ $user->add_lang('mods/phpBBFolk_lang');
 	<open src="posting.php">
 		<edit>
 			<find><![CDATA[
-$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message);		
-			]]></find>
-			<action type="after-add"><![CDATA[
-//phpBBFolk MOD
+$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);			]]></find>
+			<action type="after-add"><![CDATA[//phpBBFolk MOD
 $pbf_tags = request_var('pbf_tags', '');
 if($config['pbf_on'] == 1 && trim($pbf_tags) != ''){
 	//process tags
 	insert_tags($pbf_tags, $data['topic_id']);
 }
-//end phpBBFolk MOD	
-			]]></action>
+//end phpBBFolk MOD	]]></action>
 		</edit>	
   	</open>	
 		
 	<open src="search.php">
 		<edit>
-			<find><![CDATA[
-// For some searches we need to print out the "no results" page directly to allow re-sorting/refining the search options.
-if ((!sizeof($id_ary) && !$search_id) && !sizeof($tag_results))
-{
-	trigger_error('NO_SEARCH_RESULTS');
-}			
-			]]></find>
-			<action type="before-add"><![CDATA[
-//phpBBFolk MOD
+			<find><![CDATA[	// For some searches we need to print out the "no results" page directly to allow re-sorting/refining the search options.
+	if (!sizeof($id_ary) && !$search_id)
+	{
+		trigger_error('NO_SEARCH_RESULTS');
+	}]]></find>
+			<action type="before-add"><![CDATA[//phpBBFolk MOD
 if($keywords){
 	$tag_results 		= search_tags($keywords);
 	$tag_results_count	= sizeof($tag_results);
@@ -172,80 +173,60 @@ if($keywords){
 		)
 	);
 }
-//end phpBBFolk MOD
-			]]></action>
+//end phpBBFolk MOD	]]></action>
 		</edit>	
   	</open>	
 
 	<open src="viewtopic.php">
 		<edit>
-			<find><![CDATA[
-// Does this topic contain a poll?		
-			]]></find>
-			<action type="before-add"><![CDATA[
-//phpBBFolk MOD
+			<find><![CDATA[// Does this topic contain a poll?]]></find>
+			<action type="before-add"><![CDATA[//phpBBFolk MOD
 $template->assign_vars(array(
 		'S_ADD_TAG_ACTION'		=> append_sid("{$phpbb_root_path}phpBBFolk.$phpEx", 'mode=add_tag'),
 		'TOPIC_TAG_LIST'		=> get_tag_list($topic_id, 0, 'topic'),
 	)
 );
-//end phpBBFolk MOD
-			]]></action>
+//end phpBBFolk MOD]]></action>
 		</edit>	
   	</open>
 
 	<open src="includes/constants.php">
 		<edit>
-			<find><![CDATA[
-// Additional tables	
-			]]></find>
-			<action type="after-add"><![CDATA[
-//phpBBFolk MOD
-define('TAGS_TABLE',				$table_prefix . 'tags');
-//end phpBBFolk MOD
+			<find><![CDATA[// Additional tables]]></find>
+			<action type="after-add"><![CDATA[//phpBBFolk MOD
+define('TAGS_TABLE',				$table_prefix . 'tags');//end phpBBFolk MOD
 			]]></action>
 		</edit>	
   	</open>
 
 	<open src="includes/functions.php">
 		<edit>
-			<find><![CDATA[	
-// application/xhtml+xml not used because of IE
-header('Content-type: text/html; charset=UTF-8');	
-			]]></find>
-			<action type="before-add"><![CDATA[
-//phpBBFolk MOD
-$template->assign_vars(array(
-	'S_PHPBBFOLK_ON'		=> ($config['pbf_on'] == 1 ? true : false),
-	'TAG_CLOUD'				=> get_tag_cloud($config['pbf_min_font'], $config['pbf_max_font'], $config['pbf_colour1'], $config['pbf_colour2'], $config['pbf_tags'])
-));
-//end phpBBFolk MOD
-			]]></action>
+			<find><![CDATA[// application/xhtml+xml not used because of IE
+	header('Content-type: text/html; charset=UTF-8');]]></find>
+			<action type="before-add"><![CDATA[//phpBBFolk MOD
+    $template->assign_vars(array(
+        'S_PHPBBFOLK_ON'		=> ($config['pbf_on'] == 1 ? true : false),
+        'TAG_CLOUD'				=> get_tag_cloud($config['pbf_min_font'], $config['pbf_max_font'], $config['pbf_colour1'], $config['pbf_colour2'], $config['pbf_tags'])
+    ));
+    //end phpBBFolk MOD]]></action>
 		</edit>	
   	</open>
 	
 	<open src="language/en/common.php">
 		<edit>
-			<find><![CDATA[
-?>	
-			]]></find>
-			<action type="before-add"><![CDATA[
-//phpBBFolk MOD
+			<find><![CDATA[));]]></find>
+			<action type="after-add"><![CDATA[//phpBBFolk MOD
 $lang = array_merge($lang, array(
 		'PBF_SEARCH_TAGS'			=>	'Search tags'
 ));
-//end phpBBFolk MOD
-			]]></action>
+//end phpBBFolk MOD]]></action>
 		</edit>	
   	</open>
 
 	<open src="language/en/acp/common.php">
 		<edit>
-			<find><![CDATA[
-?>	
-			]]></find>
-			<action type="before-add"><![CDATA[
-//phpBBFolk MOD
+			<find><![CDATA[?>]]></find>
+			<action type="before-add"><![CDATA[//phpBBFolk MOD
 $lang = array_merge($lang, array(
 		'PBF_MANAGE'		=> 'Manage',
 		'PBF_CONFIGURE'		=> 'Configure',
@@ -254,93 +235,74 @@ $lang = array_merge($lang, array(
 		'PBF_CLEAR_ORPHANS'	=> 'Clear Orphans',
 		'PBF_VIEW_ALL'		=> 'View All Tags',
 ));
-//end phpBBFolk MOD
-			]]></action>
+//end phpBBFolk MOD]]></action>
 		</edit>	
   	</open>	
 
 	<open src="styles/prosilver/template/overall_header.html">
 		<edit>
-			<find><![CDATA[
- <!-- IF S_BOARD_DISABLED and S_USER_LOGGED_IN and (U_MCP or U_ACP) --> 
-<div id="message" class="rules">
-	<div class="inner"><span class="corners-top"><span></span></span>
-		<strong>{L_INFORMATION}:</strong> {L_BOARD_DISABLED}
-	<span class="corners-bottom"><span></span></span></div>
-</div>
-<!-- ENDIF -->		
-			]]></find>
+			<find><![CDATA[<!-- IF S_BOARD_DISABLED and S_USER_LOGGED_IN and (U_MCP or U_ACP) -->
+		<div id="information" class="rules">
+			<div class="inner"><span class="corners-top"><span></span></span>
+				<strong>{L_INFORMATION}:</strong> {L_BOARD_DISABLED}
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<!-- ENDIF -->]]></find>
 			<action type="after-add"><![CDATA[
-<!-- IF TAG_CLOUD and S_PHPBBFOLK_ON -->
-	<!-- phpBBFolk mod -->
-		<!-- INCLUDE phpBBFolk_tagcloud.html -->
-	<!-- end phpBBFolk mod -->	
-<!-- ENDIF -->
+        <!-- IF TAG_CLOUD and S_PHPBBFOLK_ON -->
+            <!-- phpBBFolk mod -->
+                <!-- INCLUDE phpBBFolk_tagcloud.html -->
+            <!-- end phpBBFolk mod -->
+        <!-- ENDIF -->
 			]]></action>
 		</edit>	
   	</open>	
 
 	<open src="styles/prosilver/template/posting_buttons.html">
 		<edit>
-			<find><![CDATA[
-var panels = new Array('options-panel', 'attach-panel', 'poll-panel');		
-			]]></find>
-			<action type="before-add"><![CDATA[
-//phpBBFolk MOD
+			<find><![CDATA[var panels = new Array('options-panel', 'attach-panel', 'poll-panel');]]></find>
+			<action type="after-add"><![CDATA[//phpBBFolk MOD
+<!-- IF S_PHPBBFOLK_ON and S_NEW_MESSAGE -->
 panels[panels.length] = 'phpBBFolk-panel';
-//end phpBBFolk MOD
-			]]></action>
+<!-- ENDIF -->
+//end phpBBFolk MOD]]></action>
 		</edit>	
   	</open>	
 	
 	<open src="styles/prosilver/template/posting_editor.html">
 		<edit>
-			<find><![CDATA[
-<!-- IF S_SHOW_POLL_BOX || S_POLL_DELETE --><li id="poll-panel-tab"><a href="#tabs" onclick="subPanels('poll-panel'); return false;"><span>{L_ADD_POLL}</span></a></li><!-- ENDIF -->
-			]]></find>
-			<action type="after-add"><![CDATA[
-<!-- phpBBFolk mod -->
-<!-- IF S_PHPBBFOLK_ON and S_SHOW_POLL_BOX -->
-	<li id="phpBBFolk-panel-tab"><a href="#tabs" onclick="subPanels('phpBBFolk-panel'); return false;"><span>{L_PBF_ADD_TAGS}</span></a></li>
+			<find><![CDATA[<!-- IF S_SHOW_POLL_BOX || S_POLL_DELETE --><li id="poll-panel-tab"><a href="#tabs" onclick="subPanels('poll-panel'); return false;"><span>{L_ADD_POLL}</span></a></li><!-- ENDIF -->]]></find>
+			<action type="after-add"><![CDATA[<!-- phpBBFolk mod -->
+<!-- IF S_PHPBBFOLK_ON and S_NEW_MESSAGE --><li id="phpBBFolk-panel-tab"><a href="#tabs" onclick="subPanels('phpBBFolk-panel'); return false;"><span>{L_PBF_ADD_TAGS}</span></a></li>
 	<!-- ENDIF -->
-<!-- end phpBBFolk mod -->
-			]]></action>
+<!-- end phpBBFolk mod -->]]></action>
 		</edit>	
   	</open>	
 	
 	<open src="styles/prosilver/template/posting_layout.html">
 		<edit>
-			<find><![CDATA[
-<!-- IF S_DISPLAY_REVIEW --><!-- INCLUDE posting_topic_review.html --><!-- ENDIF -->	
+			<find><![CDATA[<!-- IF S_DISPLAY_REVIEW --><!-- INCLUDE posting_topic_review.html --><!-- ENDIF -->	
 			]]></find>
-			<action type="after-add"><![CDATA[
-<!-- phpBBFolk MOD -->
-<!-- IF S_PHPBBFOLK_ON and S_SHOW_POLL_BOX --><!-- INCLUDE phpBBFolk_posting_tag_input.html --><!-- ENDIF -->
-<!-- end phpBBFolk mod -->
-			]]></action>
+			<action type="after-add"><![CDATA[<!-- phpBBFolk MOD -->
+<!-- IF S_PHPBBFOLK_ON and S_NEW_MESSAGE --><!-- INCLUDE phpBBFolk_posting_tag_input.html --><!-- ENDIF -->
+<!-- end phpBBFolk mod -->]]></action>
 		</edit>	
   	</open>	
 
 	<open src="styles/prosilver/template/search_results.html">
 		<edit>
-			<find><![CDATA[
-<!-- INCLUDE overall_header.html -->	
+			<find><![CDATA[<!-- INCLUDE overall_header.html -->	
 			]]></find>
-			<action type="after-add"><![CDATA[
-<!-- phpBBFolk MOD -->
+			<action type="after-add"><![CDATA[<!-- phpBBFolk MOD -->
 <!-- INCLUDE phpBBFolk_search_tags.html -->
-<!-- end phpBBFolk MOD -->
-			]]></action>
+<!-- end phpBBFolk MOD -->]]></action>
 		</edit>	
   	</open>	
 	
 	<open src="styles/prosilver/template/viewtopic_body.html">
 		<edit>
-			<find><![CDATA[
-<!-- INCLUDE jumpbox.html -->	
-			]]></find>
-			<action type="before-add"><![CDATA[
-<!-- phpBBFolk mod -->
+			<find><![CDATA[<!-- INCLUDE jumpbox.html -->]]></find>
+			<action type="before-add"><![CDATA[<!-- phpBBFolk mod -->
 <!-- IF TOPIC_TAG_LIST and S_PHPBBFOLK_ON -->
 	<h3>{L_PBF_TOPIC_TAGS}</h3>
 	{TOPIC_TAG_LIST}
@@ -348,21 +310,16 @@ panels[panels.length] = 'phpBBFolk-panel';
 <!-- IF not S_IS_BOT and S_USER_LOGGED_IN and S_PHPBBFOLK_ON -->
 	<!-- INCLUDE phpBBFolk_input.html -->
 <!-- ENDIF -->
-<!-- end phpBBFolk mod -->
-			]]></action>
+<!-- end phpBBFolk mod -->]]></action>
 		</edit>	
   	</open>	
 
 	<open src="styles/prosilver/theme/stylesheet.css">
 		<edit>
-			<find><![CDATA[
-@import url("colours.css");	
-			]]></find>
-			<action type="after-add"><![CDATA[
-/* phpBBFolk MOD */
+			<find><![CDATA[@import url("colours.css");]]></find>
+			<action type="after-add"><![CDATA[/* phpBBFolk MOD */
 @import url("phpBBFolk.css");
-/* end phpBBFolk MOD */
-			]]></action>
+/* end phpBBFolk MOD */]]></action>
 		</edit>	
   	</open>						
   </action-group>
