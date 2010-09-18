@@ -281,8 +281,7 @@ panels[panels.length] = 'phpBBFolk-panel';
 	
 	<open src="styles/prosilver/template/posting_layout.html">
 		<edit>
-			<find><![CDATA[<!-- IF S_DISPLAY_REVIEW --><!-- INCLUDE posting_topic_review.html --><!-- ENDIF -->	
-			]]></find>
+			<find><![CDATA[<!-- IF S_DISPLAY_REVIEW --><!-- INCLUDE posting_topic_review.html --><!-- ENDIF -->]]></find>
 			<action type="after-add"><![CDATA[<!-- phpBBFolk MOD -->
 <!-- IF S_PHPBBFOLK_ON and S_NEW_MESSAGE --><!-- INCLUDE phpBBFolk_posting_tag_input.html --><!-- ENDIF -->
 <!-- end phpBBFolk mod -->]]></action>
@@ -291,8 +290,7 @@ panels[panels.length] = 'phpBBFolk-panel';
 
 	<open src="styles/prosilver/template/search_results.html">
 		<edit>
-			<find><![CDATA[<!-- INCLUDE overall_header.html -->	
-			]]></find>
+			<find><![CDATA[<!-- INCLUDE overall_header.html -->]]></find>
 			<action type="after-add"><![CDATA[<!-- phpBBFolk MOD -->
 <!-- INCLUDE phpBBFolk_search_tags.html -->
 <!-- end phpBBFolk MOD -->]]></action>
