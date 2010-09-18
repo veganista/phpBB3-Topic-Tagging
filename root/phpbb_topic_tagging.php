@@ -1,7 +1,7 @@
 <?php
 /** 
 *
-* @package phpBBFolk
+* @package phpbb_topic_tagging
 * @version $Id: bbatgs.php,v 1.506 2007/09/24 15:26:38 nanothree Exp $
 * @copyright (c) 2005 phpBB Group 
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
@@ -49,13 +49,13 @@ switch($mode){
 			//var_dump($tag_outcome);
 			
 			$meta_info = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&t=' . $topic_id);
-			$message = sprintf($user->lang['PBF_ADD_TAGS_DONE'], $tag_outcome['added'], $tag_outcome['dups']) . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
+			$message = sprintf($user->lang['PTT_ADD_TAGS_DONE'], $tag_outcome['added'], $tag_outcome['dups']) . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
 			meta_refresh(3, $meta_info);
 		}
 		else
 		{
-			$meta_info = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&t=' . $topic_id .'#phpBBFolk_input');
-			$message = $user->lang['PBF_ADD_TAGS_NO_TAGS'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
+			$meta_info = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&t=' . $topic_id .'#phpbb_topic_tagging_input');
+			$message = $user->lang['PTT_ADD_TAGS_NO_TAGS'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
 		}
 		
 		trigger_error($message);
@@ -66,15 +66,15 @@ switch($mode){
 		if($search_tag == '')
 		{
 			$template->assign_vars(array(
-				'S_TAG_SEARCH_ACTION'		=> append_sid("{$phpbb_root}phpBBFolk.{$phpEx}", 'mode=search'),
+				'S_TAG_SEARCH_ACTION'		=> append_sid("{$phpbb_root}phpbb_topic_tagging.{$phpEx}", 'mode=search'),
 				'S_SEARCH_STRING'			=> $search_tag,
 				//'TAG_CLOUD'					=> get_tag_cloud(),
 				)
 			);		
-			page_header($user->lang['PBF_SEARCH_PAGE_TITLE']);
+			page_header($user->lang['PTT_SEARCH_PAGE_TITLE']);
 					
 			$template->set_filenames(array(
-				'body' => 'phpBBFolk_search.html')
+				'body' => 'phpbb_topic_tagging_search.html')
 			);	
 				
 			page_footer();			
@@ -182,26 +182,26 @@ switch($mode){
 					);			
 				}
 				$template->assign_vars(array(
-					'PAGINATION'	=> generate_pagination(append_sid("{$phpbb_root_path}phpBBFolk.$phpEx","tag=$search_tag"), $topics_count, $config['topics_per_page'], $start),
+					'PAGINATION'	=> generate_pagination(append_sid("{$phpbb_root_path}phpbb_topic_tagging.$phpEx","tag=$search_tag"), $topics_count, $config['topics_per_page'], $start),
 					'PAGE_NUMBER'	=> on_page($topics_count, $config['topics_per_page'], $start),
-					'TOTAL_TOPICS'	=> ($s_display_active) ? false : (($topics_count == 1) ? $user->lang['PBF_NUM_TOPIC'] : sprintf($user->lang['PBF_NUM_TOPICS'], $topics_count)),
+					'TOTAL_TOPICS'	=> ($s_display_active) ? false : (($topics_count == 1) ? $user->lang['PTT_NUM_TOPIC'] : sprintf($user->lang['PTT_NUM_TOPICS'], $topics_count)),
 					'S_DISPLAY_SEARCHBOX'		=> true,
-					'S_TAG_SEARCH_ACTION'		=> append_sid("{$phpbb_root}phpBBFolk.{$phpEx}", 'mode=search'),
+					'S_TAG_SEARCH_ACTION'		=> append_sid("{$phpbb_root}phpbb_topic_tagging.{$phpEx}", 'mode=search'),
 					'S_SEARCH_STRING'			=> $search_tag,
 					//'TAG_CLOUD'					=> get_tag_cloud()
 					)
 				);		
-				page_header($user->lang['PBF_TAGS_RESULT_TITLE']);
+				page_header($user->lang['PTT_TAGS_RESULT_TITLE']);
 					
 				$template->set_filenames(array(
-					'body' => 'phpBBFolk_search_results.html')
+					'body' => 'phpbb_topic_tagging_search_results.html')
 				);	
 				
 				page_footer();			
 			}else{
 			
-				$meta_info = append_sid("{$phpbb_root_path}phpBBFolk.$phpEx");
-				$message = sprintf($user->lang['PBF_NO_RESULTS'], $search_tag) . '<br /><br />' . sprintf($user->lang['PBF_RETURN_TO_SEARCH'], '<a href="' . $meta_info . '">', '</a>');
+				$meta_info = append_sid("{$phpbb_root_path}phpbb_topic_tagging.$phpEx");
+				$message = sprintf($user->lang['PTT_NO_RESULTS'], $search_tag) . '<br /><br />' . sprintf($user->lang['PTT_RETURN_TO_SEARCH'], '<a href="' . $meta_info . '">', '</a>');
 	
 				trigger_error($message);		
 			}

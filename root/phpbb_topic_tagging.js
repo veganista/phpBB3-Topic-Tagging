@@ -52,7 +52,7 @@ function searchSuggest(inp, outp) {
 			}else{
 				ss.className = 'suggestions_loading';
 			}
-			searchReq.open("GET", 'phpBBFolk.php?mode=get_suggestions&tag=' + trim(lastTag), true);
+			searchReq.open("GET", 'phpbb_topic_tagging.php?mode=get_suggestions&tag=' + trim(lastTag), true);
 			searchReq.onreadystatechange = handleSearchSuggest; 
 			searchReq.send(null);
 		}

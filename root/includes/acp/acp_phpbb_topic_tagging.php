@@ -2,7 +2,7 @@
 /** 
 *
 * @package acp
-* @version $Id: acp_phpBBFolk.php,v 0.1.0 2007/10/02 11:34:40 nanothree Exp $
+* @version $Id: acp_phpbb_topic_tagging.php,v 0.1.0 2007/10/02 11:34:40 nanothree Exp $
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
 */
@@ -13,7 +13,7 @@
 
 include($phpbb_root_path . '/includes/functions_user.'.$phpEx);
 
-class acp_phpBBFolk
+class acp_phpbb_topic_tagging
 {
 	var $u_action;
 					
@@ -22,7 +22,7 @@ class acp_phpBBFolk
 		global $db, $user, $auth, $template;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
 					
-		$user->add_lang('mods/phpBBFolk_lang');
+		$user->add_lang('mods/phpbb_topic_tagging_lang');
 							
 						
 		// Set up general vars
@@ -56,8 +56,8 @@ class acp_phpBBFolk
 	
 		global $template, $user, $phpEx, $phpbb_root_path, $phpbb_admin_path;
 		
-		$this->page_title 	= 'PBF_ACP_MANAGE_TITLE';	
-		$this->tpl_name     = 'acp_phpBBFolk_manage';
+		$this->page_title 	= 'PTT_ACP_MANAGE_TITLE';	
+		$this->tpl_name     = 'acp_phpbb_topic_tagging_manage';
 
 		$tags = utf8_normalize_nfc(request_var('tag', '', true));
 
@@ -73,7 +73,7 @@ class acp_phpBBFolk
 			
 			if($tags == '')
 			{
-				$message = 	$user->lang['PBF_NO_SEARCH_CRIT'] . '<br /><br />';
+				$message = 	$user->lang['PTT_NO_SEARCH_CRIT'] . '<br /><br />';
 							//sprintf($user->lang['RETURN_SEARCH'], '<a href="' . $meta_info . '">', '</a>');
 				trigger_error($message . adm_back_link($this->u_action), E_USER_WARNING);
 
@@ -115,21 +115,21 @@ class acp_phpBBFolk
 			$data = request_var('config', array('' => ''));
 		
 			//make sure that the hex codes are preceded by a # char
-			if($data['pbf_colour1'][0] != '#'){
-				$data['pbf_colour1'] = '#' . $data['pbf_colour1'];
+			if($data['ptt_colour1'][0] != '#'){
+				$data['ptt_colour1'] = '#' . $data['ptt_colour1'];
 			}
-			if($data['pbf_colour2'][0] != '#'){
-				$data['pbf_colour2'] = '#' . $data['pbf_colour2'];
+			if($data['ptt_colour2'][0] != '#'){
+				$data['ptt_colour2'] = '#' . $data['ptt_colour2'];
 			}
 					
 			$config_vars = array(
 				'vars' => array(
-					'pbf_tags' 			 => array('lang' => '', 'validate' => 'int',  	'type' => 'text:0:10', 		'explain' => false),
-					'pbf_on' 			 => array('lang' => '', 'validate' => 'bool', 	'type' => 'radio:yes_no', 	'explain' => false),
-					'pbf_max_font'		 => array('lang' => '', 'validate' => 'int',  	'type' => 'text:5:5', 		'explain' => false),
-					'pbf_min_font'		 => array('lang' => '', 'validate' => 'int',  	'type' => 'text:5:5', 		'explain' => false),
-					'pbf_colour1'		 => array('lang' => '', 'validate' => 'string', 'type' => 'text:0:7', 		'explain' => false),
-					'pbf_colour2'		 => array('lang' => '', 'validate' => 'string', 'type' => 'text:0:7', 		'explain' => false),
+					'ptt_tags' 			 => array('lang' => '', 'validate' => 'int',  	'type' => 'text:0:10', 		'explain' => false),
+					'ptt_on' 			 => array('lang' => '', 'validate' => 'bool', 	'type' => 'radio:yes_no', 	'explain' => false),
+					'ptt_max_font'		 => array('lang' => '', 'validate' => 'int',  	'type' => 'text:5:5', 		'explain' => false),
+					'ptt_min_font'		 => array('lang' => '', 'validate' => 'int',  	'type' => 'text:5:5', 		'explain' => false),
+					'ptt_colour1'		 => array('lang' => '', 'validate' => 'string', 'type' => 'text:0:7', 		'explain' => false),
+					'ptt_colour2'		 => array('lang' => '', 'validate' => 'string', 'type' => 'text:0:7', 		'explain' => false),
 				)
 			);
 			
@@ -137,11 +137,11 @@ class acp_phpBBFolk
 			validate_config_vars($config_vars, $data, $error);
 
 			$validate = array(
-				'pbf_tags' 		=> array('num'),
-				'pbf_max_font'	=> array('num'),
-				'pbf_min_font'	=> array('num'),
-				'pbf_colour1'	=> array('string', false, 4, 7),
-				'pbf_colour2'	=> array('string', false, 4, 7),
+				'ptt_tags' 		=> array('num'),
+				'ptt_max_font'	=> array('num'),
+				'ptt_min_font'	=> array('num'),
+				'ptt_colour1'	=> array('string', false, 4, 7),
+				'ptt_colour2'	=> array('string', false, 4, 7),
 			);
 			
 			$error = validate_data($data, $validate);
@@ -149,18 +149,18 @@ class acp_phpBBFolk
 			//custom validation
 			$ct = new ColourTools();
 			
-			if(!is_numeric($data['pbf_tags'])) 			$error[] = $user->lang['PBF_TAGS_NOT_NUM'];			
-			if(!is_numeric($data['pbf_max_font'])) 		$error[] = $user->lang['PBF_MAX_FONT_NOT_NUM'];			
-			if(!is_numeric($data['pbf_min_font'])) 		$error[] = $user->lang['PBF_MIN_FONT_NOT_NUM'];			
+			if(!is_numeric($data['ptt_tags'])) 			$error[] = $user->lang['PTT_TAGS_NOT_NUM'];			
+			if(!is_numeric($data['ptt_max_font'])) 		$error[] = $user->lang['PTT_MAX_FONT_NOT_NUM'];			
+			if(!is_numeric($data['ptt_min_font'])) 		$error[] = $user->lang['PTT_MIN_FONT_NOT_NUM'];			
 			
-			if(!$ct->check_hex($data['pbf_colour1']))	$error[] = $user->lang['PBF_ACP_COLOUR1_INVALID'];
-			if(!$ct->check_hex($data['pbf_colour2']))	$error[] = $user->lang['PBF_ACP_COLOUR2_INVALID'];
+			if(!$ct->check_hex($data['ptt_colour1']))	$error[] = $user->lang['PTT_ACP_COLOUR1_INVALID'];
+			if(!$ct->check_hex($data['ptt_colour2']))	$error[] = $user->lang['PTT_ACP_COLOUR2_INVALID'];
 		
 		
 			
 			if(!sizeof($error)){
 			
-				$booleans = array('pbf_on');
+				$booleans = array('ptt_on');
 				
 				foreach ($config_vars['vars'] as $config_name => $null)
 				{
@@ -174,8 +174,8 @@ class acp_phpBBFolk
 					set_config($config_name, $config_value, false);
 				}
 							
-				$message = 	$user->lang['PBF_ACP_CONF_UPDATE_SUCCESSFUL'];
-				$link 	 = append_sid("index.php", "i=phpBBFolk&mode=configure");
+				$message = 	$user->lang['PTT_ACP_CONF_UPDATE_SUCCESSFUL'];
+				$link 	 = append_sid("index.php", "i=phpbb_topic_tagging&mode=configure");
 				
 				meta_refresh(4, $phpbb_admin_path . $link);	
 				trigger_error($message . adm_back_link($link));
@@ -184,35 +184,35 @@ class acp_phpBBFolk
 					
 			$template->assign_vars(array(
 						'ERROR'					=> implode('<br />', $error),
-						'S_TAGS_ON'				=> ($data['pbf_on'] == 'yes' ? true : false),
-						'TAG_AMOUNT'			=>  $data['pbf_tags'],
-						'MAX_SIZE'				=>  $data['pbf_max_font'],
-						'MIN_SIZE'				=>  $data['pbf_min_font'],
-						'COLOUR1'				=>  $data['pbf_colour1'],
-						'COLOUR2'				=>  $data['pbf_colour2'],
+						'S_TAGS_ON'				=> ($data['ptt_on'] == 'yes' ? true : false),
+						'TAG_AMOUNT'			=>  $data['ptt_tags'],
+						'MAX_SIZE'				=>  $data['ptt_max_font'],
+						'MIN_SIZE'				=>  $data['ptt_min_font'],
+						'COLOUR1'				=>  $data['ptt_colour1'],
+						'COLOUR2'				=>  $data['ptt_colour2'],
 				)
 			);			
 
-			$this->page_title 	= 'PBF_ACP_CONFIGURE_TITLE';	
-			$this->tpl_name		= 'acp_phpBBFolk_configure';
+			$this->page_title 	= 'PTT_ACP_CONFIGURE_TITLE';	
+			$this->tpl_name		= 'acp_phpbb_topic_tagging_configure';
 
 		}
 		else
 		{
 					
 			$template->assign_vars(array(
-						'S_TAGS_ON'				=> ($config['pbf_on'] == 1 ? true : false),
-						'TAG_AMOUNT'			=>  $config['pbf_tags'],
-						'MAX_SIZE'				=>  $config['pbf_max_font'],
-						'MIN_SIZE'				=>  $config['pbf_min_font'],
-						'COLOUR1'				=>  $config['pbf_colour1'],
-						'COLOUR2'				=>  $config['pbf_colour2'],
+						'S_TAGS_ON'				=> ($config['ptt_on'] == 1 ? true : false),
+						'TAG_AMOUNT'			=>  $config['ptt_tags'],
+						'MAX_SIZE'				=>  $config['ptt_max_font'],
+						'MIN_SIZE'				=>  $config['ptt_min_font'],
+						'COLOUR1'				=>  $config['ptt_colour1'],
+						'COLOUR2'				=>  $config['ptt_colour2'],
 
 				)
 			);
 
-			$this->page_title 	= 'PBF_ACP_CONFIGURE_TITLE';	
-			$this->tpl_name		= 'acp_phpBBFolk_configure';
+			$this->page_title 	= 'PTT_ACP_CONFIGURE_TITLE';	
+			$this->tpl_name		= 'acp_phpbb_topic_tagging_configure';
 		}
 
 	}
@@ -222,8 +222,8 @@ class acp_phpBBFolk
 		
 		global $template, $user, $phpbb_admin_path;
 		
-		//$this->page_title 	= 'PBF_ACP_CONFIGURE_TITLE';	
-		//$this->tpl_name 	= 'acp_phpBBFolk_configure';
+		//$this->page_title 	= 'PTT_ACP_CONFIGURE_TITLE';	
+		//$this->tpl_name 	= 'acp_phpbb_topic_tagging_configure';
 		
 		$topic_id	= request_var('topic_id', 0);
 		$tag		= utf8_normalize_nfc(request_var('tag_id', '', true));
@@ -268,8 +268,8 @@ class acp_phpBBFolk
 			}
 			//exit();
 			//echo $topic_id;
-			$message = 	$user->lang['PBF_ACP_REMOVE_SUCCESSFUL'];
-			$action = append_sid('index.php?i=phpBBFolk&mode='.$redirect);
+			$message = 	$user->lang['PTT_ACP_REMOVE_SUCCESSFUL'];
+			$action = append_sid('index.php?i=phpbb_topic_tagging&mode='.$redirect);
 					
 			meta_refresh(3, $phpbb_admin_path . $action);	
 			trigger_error($message . adm_back_link($action));
@@ -285,12 +285,12 @@ class acp_phpBBFolk
 			);
 	
 			//display confirm box
-			confirm_box(false, $user->lang['PFB_ACP_REMOVE_CONF'], $s_hidden_fields);
+			confirm_box(false, $user->lang['PTT_ACP_REMOVE_CONF'], $s_hidden_fields);
 		}
 		
-		$action = append_sid('index.php?i=phpBBFolk&mode='.$redirect);
+		$action = append_sid('index.php?i=phpbb_topic_tagging&mode='.$redirect);
 		meta_refresh(3, $phpbb_admin_path . $action);	
-		trigger_error($user->lang['PBF_ACTION_CANCELLED'] . adm_back_link($action));
+		trigger_error($user->lang['PTT_ACTION_CANCELLED'] . adm_back_link($action));
 	
 	}
 	
@@ -307,7 +307,7 @@ class acp_phpBBFolk
 			
 			$orphans = $db->sql_affectedrows($result);
 			
-			$message = 	sprintf($user->lang['PBF_ACP_ORPHAN_SUCCESS'], $orphans);
+			$message = 	sprintf($user->lang['PTT_ACP_ORPHAN_SUCCESS'], $orphans);
 			
 			trigger_error($message);			
 			
@@ -323,15 +323,15 @@ class acp_phpBBFolk
 			$orphans = $db->sql_fetchrow($result);
 					
 			//display mode
-			confirm_box(false, sprintf($user->lang['PFB_ACP_ORPHAN_CONF'], $orphans['count']), $s_hidden_fields);
+			confirm_box(false, sprintf($user->lang['PTT_ACP_ORPHAN_CONF'], $orphans['count']), $s_hidden_fields);
 		}
 		
-		$link  = append_sid("index.php", "i=phpBBFolk&mode=configure");
+		$link  = append_sid("index.php", "i=phpbb_topic_tagging&mode=configure");
 
 		redirect($link);
 		
-		//$this->page_title 	= 'PBF_ACP_CLEAR_ORPHANS';	
-		//$this->tpl_name		= 'acp_phpBBFolk_configure';
+		//$this->page_title 	= 'PTT_ACP_CLEAR_ORPHANS';	
+		//$this->tpl_name		= 'acp_phpbb_topic_tagging_configure';
 		
 	}
 	
@@ -359,11 +359,11 @@ class acp_phpBBFolk
 		}
 		
 		$template->assign_vars(array(
-						'S_FORM_ACTION' => append_sid($phpbb_admin_path."index.$phpEx", 'i=phpBBFolk&mode=remove'),		
+						'S_FORM_ACTION' => append_sid($phpbb_admin_path."index.$phpEx", 'i=phpbb_topic_tagging&mode=remove'),		
 		));
 		
-		$this->page_title 	= 'PBF_ACP_VIEW_ALL';	
-		$this->tpl_name		= 'acp_phpBBFolk_view_all';
+		$this->page_title 	= 'PTT_ACP_VIEW_ALL';	
+		$this->tpl_name		= 'acp_phpbb_topic_tagging_view_all';
 	}
 	
 	//other functions
@@ -456,7 +456,7 @@ class acp_phpBBFolk
 					$tag_param = '&quot;' . $tag . '&quot;';
 				}
 				
-				$params = "i=phpBBFolk&mode=remove&tag_id={$tag_id}&back_link=acp_phpBBFolk&topic_id={$topic_id}";
+				$params = "i=phpbb_topic_tagging&mode=remove&tag_id={$tag_id}&back_link=acp_phpbb_topic_tagging&topic_id={$topic_id}";
 				
 				if($search_str != ''){
 					$params .= '&tag=' . $search_str;

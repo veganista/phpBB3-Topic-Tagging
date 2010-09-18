@@ -1,7 +1,7 @@
 <?php
 /** 
 *
-* @package phpBBFolk
+* @package phpbb_topic_tagging
 * @version $Id:functions_bbatgs.php,v 0.0.0 2007/09/24 15:26:38 nanothree Exp $
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
@@ -138,7 +138,7 @@ function get_tag_cloud($min_size, $max_size, $col1, $col2, $limit){
 			}
 			
 			$tag_cloud .= ' <a style="font-size:'.$size.'px; color:#'.$gradient[$count-1].';" href="'
-							.append_sid($phpbb_root.'phpBBFolk.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . $tag . '</a> ';
+							.append_sid($phpbb_root.'phpbb_topic_tagging.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . $tag . '</a> ';
 							
 		}
 	}else{
@@ -167,7 +167,7 @@ function get_tag_list($topic_id, $limit, $type = 'topic', $admin = false){
 			if($admin){
 			//$tag_list .= '<a class="tag-list-del" href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>';
 			}
-			$tag_list .= '<a href="'.append_sid($phpbb_root_path.'phpBBFolk.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . 
+			$tag_list .= '<a href="'.append_sid($phpbb_root_path.'phpbb_topic_tagging.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . 
 							$tag . '</a>, ';
 		}
 		$tag_list = substr($tag_list, 0, -2);
@@ -253,7 +253,7 @@ function get_tag_list($topic_id, $limit, $type = 'topic', $admin = false){
 			if($admin){
 			$tag_list .= '<a class="tag-list-del" href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>';
 			}
-			$tag_list .= '<a href="'.append_sid($phpbb_root_path.'phpBBFolk.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . 
+			$tag_list .= '<a href="'.append_sid($phpbb_root_path.'phpbb_topic_tagging.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . 
 							$tag . '</a>, ';
 		}
 		$tag_list = substr($tag_list, 0, -2);
@@ -285,7 +285,7 @@ function get_tag_cloud($type = 'board', $id = -1, $min_size = 8, $max_size = 26,
 		}
 		
 		$cTools 	= new ColourTools();
-		$gradient	= $cTools->gradient($config['pbf_colour1'], $config['pbf_colour2'], $max_count);
+		$gradient	= $cTools->gradient($config['ptt_colour1'], $config['ptt_colour2'], $max_count);
 				
 		foreach ($tags as $tag => $count)
 		{
@@ -299,7 +299,7 @@ function get_tag_cloud($type = 'board', $id = -1, $min_size = 8, $max_size = 26,
 				$tag_param = '&quot;' . $tag . '&quot;';
 			}
 			
-			$tag_cloud .= ' <a style="font-size:'.$size.'px; color:#'.$gradient[$count-1].';" href="'.append_sid($phpbb_root.'phpBBFolk.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . $tag . '</a> ';
+			$tag_cloud .= ' <a style="font-size:'.$size.'px; color:#'.$gradient[$count-1].';" href="'.append_sid($phpbb_root.'phpbb_topic_tagging.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . $tag . '</a> ';
 		}
 	}
 	else

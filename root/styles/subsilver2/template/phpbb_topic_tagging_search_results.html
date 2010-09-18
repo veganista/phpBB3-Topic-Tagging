@@ -1,5 +1,5 @@
 <!-- INCLUDE overall_header.html -->
-<h2>{L_PBF_TAGS_RESULT_TITLE}</h2>
+<h2>{L_PTT_TAGS_RESULT_TITLE}</h2>
 
 <!-- IF S_DISPLAY_POST_INFO or PAGINATION or TOTAL_POSTS or TOTAL_TOPICS -->
 
@@ -8,10 +8,10 @@
 			<form method="post" id="forum-search" action="{S_TAG_SEARCH_ACTION}">	
 			<div class="inner"><span class="corners-top"><span></span></span>			
 			<dl>
-				<dt><label for="tag_search">{L_PBF_ENTER_TAGS}</label></dt>
+				<dt><label for="tag_search">{L_PTT_ENTER_TAGS}</label></dt>
 				<dd>
 					<input class="inputbox" type="text" name="tag" id="tag_search" size="10" value="{S_SEARCH_STRING}" />
-					<input class="button2" type="submit" value="{L_PBF_TAG_SEARCH_TEXT}" />
+					<input class="button2" type="submit" value="{L_PTT_TAG_SEARCH_TEXT}" />
 				</dd>
 			</dl><br />
 			<span class="corners-bottom"><span></span></span></div>
@@ -104,7 +104,7 @@
 					<!-- IF topicrow.S_TOPIC_REPORTED --><a href="{topicrow.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
 					<!-- IF topicrow.PAGINATION --><strong class="pagination"><span>{topicrow.PAGINATION}</span></strong><!-- ENDIF -->
 					<!-- IF topicrow.ATTACH_ICON_IMG -->{topicrow.ATTACH_ICON_IMG} <!-- ENDIF -->{L_POST_BY_AUTHOR} {topicrow.TOPIC_AUTHOR_FULL} {L_POSTED_ON_DATE} {topicrow.FIRST_POST_TIME}<br />
-				{L_PBF_TAGS_LABEL}: {topicrow.TAG_LIST}
+				{L_PTT_TAGS_LABEL}: {topicrow.TAG_LIST}
 				</dt>
 				<dd class="posts">{topicrow.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
 				<dd class="views">{topicrow.VIEWS} <dfn>{L_VIEWS}</dfn></dd>
@@ -163,6 +163,11 @@
 	</div>
 <!-- ENDIF -->
 
+<!-- phpbb_topic_tagging mod -->
+<!-- IF TAG_CLOUD -->
+	<!-- INCLUDE phpbb_topic_tagging_tagcloud.html -->
+<!-- ENDIF -->
+<!-- end phpbb_topic_tagging mod -->
 	
 <!-- INCLUDE jumpbox.html -->
 
