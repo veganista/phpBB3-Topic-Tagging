@@ -55,9 +55,7 @@ function insert_tag($tag, $topic_id){
 	{
 			
 		$sql = "INSERT INTO " . TAGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_array);
-		
-		//echo $sql;
-		
+				
 		$db->sql_query($sql);
 		
 		return true;
@@ -220,17 +218,13 @@ function get_topic_tags($type = 'board', $id = 0, $limit = 60){
 	}
 	$result_set = $db->sql_fetchrowset($result);			
 	
-	//echo '<pre>';
-	//print_r($result_set);
-	//echo "_________________________";
 	$tag_array	= array();
 	
 	for($i = 0; $i < sizeof($result_set); $i++)
 	{
 		$tag_array[$result_set[$i]['tag']] = $result_set[$i]['tag_count'];
 	}
-	//echo '<pre>';
-	//print_r($tag_array);
+
 	return $tag_array;
 }
 
@@ -386,9 +380,6 @@ function get_num_rows($tags){
 			 topi.topic_attachment,
 			 topi.topic_first_poster_name
 			 ORDER BY count DESC";
-	
-	//echo '<pre>';
-	//echo $sql;
 			
 	if(!($result = $db->sql_query($sql)))
 	{
@@ -505,10 +496,6 @@ function search_tags($tags, $start = 0, $end = false){
 	
 	$result_set = $db->sql_fetchrowset($result);
 
-
-	//echo '<pre>';
-	//echo var_dump($result_set);
-		
 	return $result_set;
 	
 }
@@ -536,9 +523,7 @@ function filter_tags($tags){
 			array_push($filtered_array['include'], $tag_array[$i]);
 		}
 	}
-	
-	//echo '<pre>';
-	//print_r($filtered_array);
+
 	return $filtered_array;
 }
 
@@ -570,18 +555,14 @@ function tags_to_array($string){
 		}
 		else
 		{
-			//echo $str_buffer;
 			$str_buffer .= $tags[$i];
 		}
 
 	}
 	$str_buffer = htmlspecialchars(str_replace('"', '', $str_buffer));
-	//echo $str_buffer;
-	array_push($str_array, $str_buffer);
-	
-	//echo '<pre>';
-	//print_r($str_array);
-	
+
+    array_push($str_array, $str_buffer);
+		
 	return $str_array;
 	
 }
@@ -594,11 +575,8 @@ function prepare_search_string($str_array){
 	for($j = 0; $j < sizeof($str_array); $j++)
 	{
 		$prep_str .= "'" . $db->sql_escape($str_array[$j]) . "',";
-		//echo $prep_str.'-'.$j.'<br />';
 	}
-	
-	//echo $prep_str;
-	
+		
 	return substr($prep_str, 0, strlen($prep_str)-1);
 }
 

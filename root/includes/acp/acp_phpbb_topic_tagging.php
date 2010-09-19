@@ -89,7 +89,6 @@ class acp_phpbb_topic_tagging
 				$row_count = 0;
 				foreach($topics as $row){
 					
-					//echo append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $row['forum_id'] . '&t=' . $row['topic_id']).'<br>';
 					$template->assign_block_vars('topicrow', array(
 								'TOPIC_TITLE' 	=> $row['topic_title'],
 								'TOPIC_TAGS'  	=> $this->get_tag_list($row['topic_id'], $tags),
@@ -248,12 +247,6 @@ class acp_phpbb_topic_tagging
 
 		if (confirm_box(true))
 		{
-			//echo '<pre>';
-			//print_r($_POST['tag_id']);
-			//echo '<br /><br />$tag<br /><br />';
-			//print_r($tag);
-			//echo '<pre>';
-			//var_dump($tag);
 			if(is_array($tag))
 			{
 				foreach($tag as $topic_id => $topic_tags){
@@ -266,8 +259,7 @@ class acp_phpbb_topic_tagging
 			{
 				$this->remove_tag($tag, $topic_id);
 			}
-			//exit();
-			//echo $topic_id;
+
 			$message = 	$user->lang['PTT_ACP_REMOVE_SUCCESSFUL'];
 			$action = append_sid('index.php?i=phpbb_topic_tagging&mode='.$redirect);
 					
@@ -346,8 +338,6 @@ class acp_phpbb_topic_tagging
 		$result = $db->sql_query($sql);
 		$tags = $db->sql_fetchrowset($result);
 		
-		//var_dump($tags);
-
 		foreach($tags as $row){
 			$template->assign_block_vars('tags', array(
 						'TOPIC_ID' 		=> $row['topic_id'],
@@ -407,12 +397,9 @@ class acp_phpbb_topic_tagging
 		
 		$result_set = $db->sql_fetchrowset($result);
 		
-		return $result_set;
-		
-		//echo '<pre>';
-		//echo var_dump($result_set);
-		
+		return $result_set;		
 	}
+    
 	function get_topic_tags($topic_id){
 		
 		global $db;
@@ -509,13 +496,10 @@ class acp_phpbb_topic_tagging
 	
 		}
 		
-		//echo $str_buffer;
 		$str_buffer = str_replace('"', '', $str_buffer);
 		$str_buffer = str_replace("'", '', $str_buffer);
 		array_push($str_array, $str_buffer);
-		
-		//echo $str_buffer;
-		
+				
 		$pre_str = "";
 		for($j = 0; $j < sizeof($str_array); $j++)
 		{

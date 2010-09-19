@@ -43,11 +43,7 @@ switch($mode){
 		//get user input
 		if(trim($tags) != '')
 		{
-			$tag_outcome = insert_tags($tags, $topic_id);
-			
-			//echo '<pre>';
-			//var_dump($tag_outcome);
-			
+			$tag_outcome = insert_tags($tags, $topic_id);			
 			$meta_info = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&t=' . $topic_id);
 			$message = sprintf($user->lang['PTT_ADD_TAGS_DONE'], $tag_outcome['added'], $tag_outcome['dups']) . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
 			meta_refresh(3, $meta_info);
@@ -85,9 +81,6 @@ switch($mode){
 			
 			$result_set = search_tags($search_tag, $start);
 
-			//echo '<pre>';
-			//echo var_dump($result_set);
-					
 			$topics_count = get_num_rows($search_tag);
 	
 			if ($topics_count > 0)
@@ -124,9 +117,7 @@ switch($mode){
 					$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $forum_id)) ? true : false;
 					$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $forum_id)) ? true : false;
 					$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$topic_id", true, $user->session_id) : '';					
-					//echo '<pre>';
-					//var_dump($row);
-					//exit();
+
 					$template->assign_block_vars('topicrow', array(
 						'FORUM_ID'					=> $forum_id,
 						'TOPIC_ID'					=> $topic_id,
@@ -228,9 +219,7 @@ switch($mode){
 			
 			$result 	= $db->sql_query($sql);
 			$res_set	= $db->sql_fetchrowset($result);
-			//echo $sql;
-			//echo '<pre>';
-			//var_dump($res_set);
+
 			$i = 0;
 			$out = '';
 			if(count($res_set) > 0){

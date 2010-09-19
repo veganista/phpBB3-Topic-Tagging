@@ -2,155 +2,160 @@
 <?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
 <!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
 <mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.0.xsd">
-  <header>
-    <license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
-    <title lang="en-gb">phpBB Topic Tagging</title>
-    <description lang="en-gb">This mod allows topics to be tagged by users</description>
-    <author-notes lang="en-gb"></author-notes>
+    <header>
+        <license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+        <title lang="en-gb">phpBB Topic Tagging</title>
+        <description lang="en-gb">This mod allows topics to be tagged by users</description>
+        <author-notes lang="en-gb"></author-notes>
     
-	<author-group>
-      <author>
-        <realname>Liam</realname>
-        <email>liam@nanothree.net</email>
-        <username>nanothree</username>
-        <homepage>http://www.nanothree.net</homepage>
-        <contributions />
-      </author>
-    </author-group>
+        <author-group>
+            <author>
+                <realname>Liam</realname>
+                <email>liam@nanothree.net</email>
+                <username>nanothree</username>
+                <homepage>http://www.nanothree.net</homepage>
+                <contributions />
+            </author>
+        </author-group>
 	
- 	<mod-version>1.0.1</mod-version>
+        <mod-version>1.0.1</mod-version>
 
 	
-    <installation>
-      <level>easy</level>
-      <time>600</time>
-      <target-version>
-        <target-primary>3.0</target-primary>
-        <target-major allow="exact">3</target-major>
-        <target-minor allow="exact">0</target-minor>
-      </target-version>
-    </installation>
+        <installation>
+            <level>easy</level>
+            <time>600</time>
+            <target-version>
+                <target-primary>3.0</target-primary>
+                <target-major allow="exact">3</target-major>
+                <target-minor allow="exact">0</target-minor>
+            </target-version>
+        </installation>
 		
-    <history>
+        <history>
 
-      <entry>
-        <date>2010-09-18</date>
-        <rev-version>1.0.1</rev-version>
-        <changelog lang="en-GB">
-            <change>Renamed mod to phpBB Topic Tagging</change>
-          <change>Updated to phpBB3 version 3.0.7-PL1</change>
-          <change>Minor annoyances fixed</change>
-		</changelog>
-      </entry>
+            <entry>
+                <date>2010-09-18</date>
+                <rev-version>1.0.1</rev-version>
+                <changelog lang="en-GB">
+                    <change>Renamed mod to phpBB Topic Tagging</change>
+                    <change>Updated to phpBB3 version 3.0.7-PL1</change>
+                    <change>Minor annoyances fixed</change>
+                </changelog>
+            </entry>
 
-      <entry>
-        <date>2008-07-30</date>
-        <rev-version>1.0.0a</rev-version>
-        <changelog lang="en-GB">
-          <change>Restart of old project, files can still be found at http://www.nanothree.net/phpbb/forum/mods/</change>
-          <change>Better integration of search</change>
-		  <change>Tag suggestions</change>
-		</changelog>
-      </entry>	
-	</history>
+            <entry>
+                <date>2008-07-30</date>
+                <rev-version>1.0.0a</rev-version>
+                <changelog lang="en-GB">
+                    <change>Restart of old project, files can still be found at http://www.nanothree.net/phpbb/forum/mods/</change>
+                    <change>Better integration of search</change>
+                    <change>Tag suggestions</change>
+                </changelog>
+            </entry>
+        </history>
 	
-    <meta name="generator" content="Phpbb.ModTeam.Tools (c#)" />
-  </header>
+        <meta name="generator" content="Phpbb.ModTeam.Tools (c#)" />
+    </header>
   
-  <action-group>
+    <action-group>
     <!-- ACTIONS GO HERE -->
-	<sql dbms="mysql">
+        <sql dbms="mysql">
 CREATE TABLE phpbb_tags (
   topic_id int NOT NULL,
   tag varchar(255) NOT NULL,
   PRIMARY KEY  (topic_id,tag)
 );
-	</sql>
-    <sql dbms="mysql">
+        </sql>
+        <sql dbms="mysql">
 INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_on', '1', '0');
-    </sql>
-    <sql dbms="mysql">
+        </sql>
+        <sql dbms="mysql">
 INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_tags', '60', '0');
-    </sql>
-    <sql dbms="mysql">
+        </sql>
+        <sql dbms="mysql">
 INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_min_font', '9', '0');
-    </sql>
-    <sql dbms="mysql">
+        </sql>
+        <sql dbms="mysql">
 INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_max_font', '28', '0');
-    </sql>
-    <sql dbms="mysql">
+        </sql>
+        <sql dbms="mysql">
 INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_colour1', '#779FBF', '0');
-    </sql>
-    <sql dbms="mysql">
+        </sql>
+        <sql dbms="mysql">
 INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_colour2', '#779FBF', '0');
-    </sql>
-	<copy>
-		<file from="root/phpbb_topic_tagging.php" to="phpbb_topic_tagging.php" />
-		<file from="root/phpbb_topic_tagging.js" to="phpbb_topic_tagging.js" />
+        </sql>
+        <copy>
+            <file from="root/phpbb_topic_tagging.php" to="phpbb_topic_tagging.php" />
+            <file from="root/phpbb_topic_tagging.js" to="phpbb_topic_tagging.js" />
 		
-		<file from="root/adm/style/acp_phpbb_topic_tagging_manage.html" to="adm/style/acp_phpbb_topic_tagging_manage.html" />
-		<file from="root/adm/style/acp_phpbb_topic_tagging_configure.html" to="adm/style/acp_phpbb_topic_tagging_configure.html" />
-		<file from="root/adm/style/acp_phpbb_topic_tagging_view_all.html" to="adm/style/acp_phpbb_topic_tagging_view_all.html" />
+            <file from="root/adm/style/acp_phpbb_topic_tagging_manage.html" to="adm/style/acp_phpbb_topic_tagging_manage.html" />
+            <file from="root/adm/style/acp_phpbb_topic_tagging_configure.html" to="adm/style/acp_phpbb_topic_tagging_configure.html" />
+            <file from="root/adm/style/acp_phpbb_topic_tagging_view_all.html" to="adm/style/acp_phpbb_topic_tagging_view_all.html" />
 				
-		<file from="root/includes/functions_phpbb_topic_tagging.php" to="includes/functions_phpbb_topic_tagging.php" />
-		<file from="root/includes/ColourTools.php" to="includes/ColourTools.php" />
-		<file from="root/includes/acp/acp_phpbb_topic_tagging.php" to="includes/acp/acp_phpbb_topic_tagging.php" />
-		<file from="root/includes/acp/info/acp_phpbb_topic_tagging.php" to="includes/acp/info/acp_phpbb_topic_tagging.php" />
+            <file from="root/includes/functions_phpbb_topic_tagging.php" to="includes/functions_phpbb_topic_tagging.php" />
+            <file from="root/includes/ColourTools.php" to="includes/ColourTools.php" />
+            <file from="root/includes/acp/acp_phpbb_topic_tagging.php" to="includes/acp/acp_phpbb_topic_tagging.php" />
+            <file from="root/includes/acp/info/acp_phpbb_topic_tagging.php" to="includes/acp/info/acp_phpbb_topic_tagging.php" />
 		
-		<file from="root/language/en/mods/phpbb_topic_tagging_lang.php" to="language/en/mods/phpbb_topic_tagging_lang.php" />
+            <file from="root/language/en/mods/phpbb_topic_tagging_lang.php" to="language/en/mods/phpbb_topic_tagging_lang.php" />
 		
-		<file from="root/styles/prosilver/template/phpbb_topic_tagging_input.html" 
+            <file from="root/styles/prosilver/template/phpbb_topic_tagging_input.html"
 			  to="styles/prosilver/template/phpbb_topic_tagging_input.html" />
-		<file from="root/styles/prosilver/template/phpbb_topic_tagging_search_results.html" 
+            <file from="root/styles/prosilver/template/phpbb_topic_tagging_search_results.html"
 			  to="styles/prosilver/template/phpbb_topic_tagging_search_results.html" />
-		<file from="root/styles/prosilver/template/phpbb_topic_tagging_search.html" 
+            <file from="root/styles/prosilver/template/phpbb_topic_tagging_search.html"
 			  to="styles/prosilver/template/phpbb_topic_tagging_search.html" />
-		<file from="root/styles/prosilver/template/phpbb_topic_tagging_search_results.html" 
+            <file from="root/styles/prosilver/template/phpbb_topic_tagging_search_results.html"
 			  to="styles/prosilver/template/phpbb_topic_tagging_search_results.html" />
-		<file from="root/styles/prosilver/template/phpbb_topic_tagging_search_tags.html" 
+            <file from="root/styles/prosilver/template/phpbb_topic_tagging_search_tags.html"
 			  to="styles/prosilver/template/phpbb_topic_tagging_search_tags.html" />
-		<file from="root/styles/prosilver/template/phpbb_topic_tagging_tagcloud.html" 
+            <file from="root/styles/prosilver/template/phpbb_topic_tagging_tagcloud.html"
 			  to="styles/prosilver/template/phpbb_topic_tagging_tagcloud.html" />
-		<file from="root/styles/prosilver/template/phpbb_topic_tagging_posting_tag_input.html" 
+            <file from="root/styles/prosilver/template/phpbb_topic_tagging_posting_tag_input.html"
 			  to="styles/prosilver/template/phpbb_topic_tagging_posting_tag_input.html" />
-		<file from="root/styles/prosilver/theme/phpbb_topic_tagging.css" 
+            <file from="root/styles/prosilver/theme/phpbb_topic_tagging.css"
 			  to="styles/prosilver/theme/phpbb_topic_tagging.css" />
-  	</copy>
+        </copy>
 
-	<open src="common.php">
-		<edit>
-			<find><![CDATA[?>]]></find>
-			<action type="before-add"><![CDATA[
+        <open src="common.php">
+            <edit>
+                <find><![CDATA[?>]]>
+                </find>
+                <action type="before-add"><![CDATA[
 //phpbb_topic_tagging MOD
 include($phpbb_root_path . 'includes/functions_phpbb_topic_tagging.' . $phpEx);
 include($phpbb_root_path . 'includes/ColourTools.' . $phpEx);
 $user->add_lang('mods/phpbb_topic_tagging_lang');
 //end phpbb_topic_tagging MOD
-			]]></action>
-		</edit>	
-  	</open>	
-	<open src="posting.php">
-		<edit>
-			<find><![CDATA[
-$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);			]]></find>
-			<action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
+			]]>
+                </action>
+            </edit>
+        </open>
+        <open src="posting.php">
+            <edit>
+                <find><![CDATA[
+$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);			]]>
+                </find>
+                <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 $ptt_tags = request_var('ptt_tags', '');
 if($config['ptt_on'] == 1 && trim($ptt_tags) != ''){
 	//process tags
 	insert_tags($ptt_tags, $data['topic_id']);
 }
-//end phpbb_topic_tagging MOD	]]></action>
-		</edit>	
-  	</open>	
+//end phpbb_topic_tagging MOD	]]>
+                </action>
+            </edit>
+        </open>
 		
-	<open src="search.php">
-		<edit>
-			<find><![CDATA[	// For some searches we need to print out the "no results" page directly to allow re-sorting/refining the search options.
+        <open src="search.php">
+            <edit>
+                <find><![CDATA[	// For some searches we need to print out the "no results" page directly to allow re-sorting/refining the search options.
 	if (!sizeof($id_ary) && !$search_id)
 	{
 		trigger_error('NO_SEARCH_RESULTS');
-	}]]></find>
-			<action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
+	}]]>
+                </find>
+                <action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
 if($keywords){
 	$tag_results 		= search_tags($keywords);
 	$tag_results_count	= sizeof($tag_results);
@@ -183,60 +188,70 @@ if($keywords){
 		)
 	);
 }
-//end phpbb_topic_tagging MOD	]]></action>
-		</edit>	
-  	</open>	
+//end phpbb_topic_tagging MOD	]]>
+                </action>
+            </edit>
+        </open>
 
-	<open src="viewtopic.php">
-		<edit>
-			<find><![CDATA[// Does this topic contain a poll?]]></find>
-			<action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
+        <open src="viewtopic.php">
+            <edit>
+                <find><![CDATA[// Does this topic contain a poll?]]>
+                </find>
+                <action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
 $template->assign_vars(array(
 		'S_ADD_TAG_ACTION'		=> append_sid("{$phpbb_root_path}phpbb_topic_tagging.$phpEx", 'mode=add_tag'),
 		'TOPIC_TAG_LIST'		=> get_tag_list($topic_id, 0, 'topic'),
 	)
 );
-//end phpbb_topic_tagging MOD]]></action>
-		</edit>	
-  	</open>
+//end phpbb_topic_tagging MOD]]>
+                </action>
+            </edit>
+        </open>
 
-	<open src="includes/constants.php">
-		<edit>
-			<find><![CDATA[// Additional tables]]></find>
-			<action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
+        <open src="includes/constants.php">
+            <edit>
+                <find><![CDATA[// Additional tables]]>
+                </find>
+                <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 define('TAGS_TABLE',				$table_prefix . 'tags');//end phpbb_topic_tagging MOD
-			]]></action>
-		</edit>	
-  	</open>
+			]]>
+                </action>
+            </edit>
+        </open>
 
-	<open src="includes/functions.php">
-		<edit>
-			<find><![CDATA[// application/xhtml+xml not used because of IE
-	header('Content-type: text/html; charset=UTF-8');]]></find>
-			<action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
+        <open src="includes/functions.php">
+            <edit>
+                <find><![CDATA[// application/xhtml+xml not used because of IE
+	header('Content-type: text/html; charset=UTF-8');]]>
+                </find>
+                <action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
     $template->assign_vars(array(
         'S_PHPBB_TOPIC_TAGGING_ON'		=> ($config['ptt_on'] == 1 ? true : false),
         'TAG_CLOUD'				=> get_tag_cloud($config['ptt_min_font'], $config['ptt_max_font'], $config['ptt_colour1'], $config['ptt_colour2'], $config['ptt_tags'])
     ));
-    //end phpbb_topic_tagging MOD]]></action>
-		</edit>	
-  	</open>
+    //end phpbb_topic_tagging MOD]]>
+                </action>
+            </edit>
+        </open>
 	
-	<open src="language/en/common.php">
-		<edit>
-			<find><![CDATA[));]]></find>
-			<action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
+        <open src="language/en/common.php">
+            <edit>
+                <find><![CDATA[));]]>
+                </find>
+                <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 $lang = array_merge($lang, array(
 		'PTT_SEARCH_TAGS'			=>	'Search tags'
 ));
-//end phpbb_topic_tagging MOD]]></action>
-		</edit>	
-  	</open>
+//end phpbb_topic_tagging MOD]]>
+                </action>
+            </edit>
+        </open>
 
-	<open src="language/en/acp/common.php">
-		<edit>
-			<find><![CDATA[?>]]></find>
-			<action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
+        <open src="language/en/acp/common.php">
+            <edit>
+                <find><![CDATA[?>]]>
+                </find>
+                <action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
 $lang = array_merge($lang, array(
 		'PTT_MANAGE'		=> 'Manage',
 		'PTT_CONFIGURE'		=> 'Configure',
@@ -245,72 +260,84 @@ $lang = array_merge($lang, array(
 		'PTT_CLEAR_ORPHANS'	=> 'Clear Orphans',
 		'PTT_VIEW_ALL'		=> 'View All Tags',
 ));
-//end phpbb_topic_tagging MOD]]></action>
-		</edit>	
-  	</open>	
+//end phpbb_topic_tagging MOD]]>
+                </action>
+            </edit>
+        </open>
 
-	<open src="styles/prosilver/template/overall_header.html">
-		<edit>
-			<find><![CDATA[<!-- IF S_BOARD_DISABLED and S_USER_LOGGED_IN and (U_MCP or U_ACP) -->
+        <open src="styles/prosilver/template/overall_header.html">
+            <edit>
+                <find><![CDATA[<!-- IF S_BOARD_DISABLED and S_USER_LOGGED_IN and (U_MCP or U_ACP) -->
 		<div id="information" class="rules">
 			<div class="inner"><span class="corners-top"><span></span></span>
 				<strong>{L_INFORMATION}:</strong> {L_BOARD_DISABLED}
 			<span class="corners-bottom"><span></span></span></div>
 		</div>
-		<!-- ENDIF -->]]></find>
-			<action type="after-add"><![CDATA[
+		<!-- ENDIF -->]]>
+                </find>
+                <action type="after-add"><![CDATA[
         <!-- IF TAG_CLOUD and S_PHPBB_TOPIC_TAGGING_ON -->
             <!-- phpbb_topic_tagging mod -->
                 <!-- INCLUDE phpbb_topic_tagging_tagcloud.html -->
             <!-- end phpbb_topic_tagging mod -->
         <!-- ENDIF -->
-			]]></action>
-		</edit>	
-  	</open>	
+			]]>
+                </action>
+            </edit>
+        </open>
 
-	<open src="styles/prosilver/template/posting_buttons.html">
-		<edit>
-			<find><![CDATA[var panels = new Array('options-panel', 'attach-panel', 'poll-panel');]]></find>
-			<action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
+        <open src="styles/prosilver/template/posting_buttons.html">
+            <edit>
+                <find><![CDATA[var panels = new Array('options-panel', 'attach-panel', 'poll-panel');]]>
+                </find>
+                <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 <!-- IF S_PHPBB_TOPIC_TAGGING_ON and S_NEW_MESSAGE -->
 panels[panels.length] = 'phpbb_topic_tagging-panel';
 <!-- ENDIF -->
-//end phpbb_topic_tagging MOD]]></action>
-		</edit>	
-  	</open>	
+//end phpbb_topic_tagging MOD]]>
+                </action>
+            </edit>
+        </open>
 	
-	<open src="styles/prosilver/template/posting_editor.html">
-		<edit>
-			<find><![CDATA[<!-- IF S_SHOW_POLL_BOX || S_POLL_DELETE --><li id="poll-panel-tab"><a href="#tabs" onclick="subPanels('poll-panel'); return false;"><span>{L_ADD_POLL}</span></a></li><!-- ENDIF -->]]></find>
-			<action type="after-add"><![CDATA[<!-- phpbb_topic_tagging mod -->
+        <open src="styles/prosilver/template/posting_editor.html">
+            <edit>
+                <find><![CDATA[<!-- IF S_SHOW_POLL_BOX || S_POLL_DELETE --><li id="poll-panel-tab"><a href="#tabs" onclick="subPanels('poll-panel'); return false;"><span>{L_ADD_POLL}</span></a></li><!-- ENDIF -->]]>
+                </find>
+                <action type="after-add"><![CDATA[<!-- phpbb_topic_tagging mod -->
 <!-- IF S_PHPBB_TOPIC_TAGGING_ON and S_NEW_MESSAGE --><li id="phpbb_topic_tagging-panel-tab"><a href="#tabs" onclick="subPanels('phpbb_topic_tagging-panel'); return false;"><span>{L_PTT_ADD_TAGS}</span></a></li>
 	<!-- ENDIF -->
-<!-- end phpbb_topic_tagging mod -->]]></action>
-		</edit>	
-  	</open>	
+<!-- end phpbb_topic_tagging mod -->]]>
+                </action>
+            </edit>
+        </open>
 	
-	<open src="styles/prosilver/template/posting_layout.html">
-		<edit>
-			<find><![CDATA[<!-- IF S_DISPLAY_REVIEW --><!-- INCLUDE posting_topic_review.html --><!-- ENDIF -->]]></find>
-			<action type="after-add"><![CDATA[<!-- phpbb_topic_tagging MOD -->
+        <open src="styles/prosilver/template/posting_layout.html">
+            <edit>
+                <find><![CDATA[<!-- IF S_DISPLAY_REVIEW --><!-- INCLUDE posting_topic_review.html --><!-- ENDIF -->]]>
+                </find>
+                <action type="after-add"><![CDATA[<!-- phpbb_topic_tagging MOD -->
 <!-- IF S_PHPBB_TOPIC_TAGGING_ON and S_NEW_MESSAGE --><!-- INCLUDE phpbb_topic_tagging_posting_tag_input.html --><!-- ENDIF -->
-<!-- end phpbb_topic_tagging mod -->]]></action>
-		</edit>	
-  	</open>	
+<!-- end phpbb_topic_tagging mod -->]]>
+                </action>
+            </edit>
+        </open>
 
-	<open src="styles/prosilver/template/search_results.html">
-		<edit>
-			<find><![CDATA[<!-- INCLUDE overall_header.html -->]]></find>
-			<action type="after-add"><![CDATA[<!-- phpbb_topic_tagging MOD -->
+        <open src="styles/prosilver/template/search_results.html">
+            <edit>
+                <find><![CDATA[<!-- INCLUDE overall_header.html -->]]>
+                </find>
+                <action type="after-add"><![CDATA[<!-- phpbb_topic_tagging MOD -->
 <!-- INCLUDE phpbb_topic_tagging_search_tags.html -->
-<!-- end phpbb_topic_tagging MOD -->]]></action>
-		</edit>	
-  	</open>	
+<!-- end phpbb_topic_tagging MOD -->]]>
+                </action>
+            </edit>
+        </open>
 	
-	<open src="styles/prosilver/template/viewtopic_body.html">
-		<edit>
-			<find><![CDATA[<!-- INCLUDE jumpbox.html -->]]></find>
-			<action type="before-add"><![CDATA[<!-- phpbb_topic_tagging mod -->
+        <open src="styles/prosilver/template/viewtopic_body.html">
+            <edit>
+                <find><![CDATA[<!-- INCLUDE jumpbox.html -->]]>
+                </find>
+                <action type="before-add"><![CDATA[<!-- phpbb_topic_tagging mod -->
 <!-- IF TOPIC_TAG_LIST and S_PHPBB_TOPIC_TAGGING_ON -->
 	<h3>{L_PTT_TOPIC_TAGS}</h3>
 	{TOPIC_TAG_LIST}
@@ -318,18 +345,21 @@ panels[panels.length] = 'phpbb_topic_tagging-panel';
 <!-- IF not S_IS_BOT and S_USER_LOGGED_IN and S_PHPBB_TOPIC_TAGGING_ON -->
 	<!-- INCLUDE phpbb_topic_tagging_input.html -->
 <!-- ENDIF -->
-<!-- end phpbb_topic_tagging mod -->]]></action>
-		</edit>	
-  	</open>	
+<!-- end phpbb_topic_tagging mod -->]]>
+                </action>
+            </edit>
+        </open>
 
-	<open src="styles/prosilver/theme/stylesheet.css">
-		<edit>
-			<find><![CDATA[@import url("colours.css");]]></find>
-			<action type="after-add"><![CDATA[/* phpbb_topic_tagging MOD */
+        <open src="styles/prosilver/theme/stylesheet.css">
+            <edit>
+                <find><![CDATA[@import url("colours.css");]]>
+                </find>
+                <action type="after-add"><![CDATA[/* phpbb_topic_tagging MOD */
 @import url("phpbb_topic_tagging.css");
-/* end phpbb_topic_tagging MOD */]]></action>
-		</edit>	
-  	</open>						
-  </action-group>
+/* end phpbb_topic_tagging MOD */]]>
+                </action>
+            </edit>
+        </open>
+    </action-group>
 </mod>
 
