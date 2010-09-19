@@ -18,6 +18,14 @@
 		Creative Commons Attribution-ShareAlike 2.5 License
 ----------------------------------------------------------------------*/
 
+/**
+* @ignore
+*/
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
 class ColourTools
 {
 	/*--------------------------------------------------

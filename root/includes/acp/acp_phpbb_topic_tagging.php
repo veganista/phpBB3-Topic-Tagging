@@ -1,15 +1,17 @@
 <?php
 /** 
 *
-* @package acp
-* @version $Id: acp_phpbb_topic_tagging.php,v 0.1.0 2007/10/02 11:34:40 nanothree Exp $
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
 */
-			
+
 /**
-* @package acp
+* @ignore
 */
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
 
 include($phpbb_root_path . '/includes/functions_user.'.$phpEx);
 

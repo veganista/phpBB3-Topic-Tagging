@@ -10,6 +10,14 @@
 */
 
 /**
+* @ignore
+*/
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
+/**
 * DO NOT CHANGE
 */
 if (empty($lang) || !is_array($lang))

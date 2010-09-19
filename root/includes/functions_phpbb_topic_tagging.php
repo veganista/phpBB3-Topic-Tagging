@@ -2,7 +2,6 @@
 /** 
 *
 * @package phpbb_topic_tagging
-* @version $Id:functions_bbatgs.php,v 0.0.0 2007/09/24 15:26:38 nanothree Exp $
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
 */
@@ -10,6 +9,11 @@
 /**
 * @ignore
 */
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
 function insert_tags($tags, $topic_id){
 	
 	$outcome 	= array('added' => 0, 'dups' => 0);

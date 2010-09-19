@@ -18,18 +18,17 @@
             </author>
         </author-group>
 	
-        <mod-version>1.0.1b</mod-version>
+        <mod-version>
+            <major>1</major>
+            <minor>0</minor>
+            <revision>1</revision>
+            <release>b</release>
+        </mod-version>
 
-	
         <installation>
             <level>easy</level>
             <time>600</time>
-            <mod-version>
-                <major>1</major>
-                <minor>0</minor>
-                <revision>1</revision>
-                <release>b</release>
-            </mod-version>
+            <target-version>3.0.7</target-version>
         </installation>
 		
         <history>

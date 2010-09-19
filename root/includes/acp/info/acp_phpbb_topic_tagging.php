@@ -2,15 +2,18 @@
 /** 
 *
 * @package acp
-* @version $Id: v3_modules.xml,v 1.4 2007/03/18 18:16:40 kellanved Exp $
-* @copyright (c) 2007 phpBB Group 
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
 */
 							
 /**
-* @package module_install
+* @ignore
 */
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
 class acp_phpbb_topic_tagging_info
 {
 
