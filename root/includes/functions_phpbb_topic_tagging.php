@@ -90,7 +90,7 @@ function get_board_tags($limit){
 }
 function get_topic_tags($topic_id, $limit){
 
-	global $db, $config; //TESTING NEEDS TO BE DOEN ON THESE NEW FUNCTIONS!!!
+	global $db, $config;
 
 	$sql = "SELECT t.tag, COUNT(*) tag_count
 			FROM " . TAGS_TABLE . " t, " . TOPICS_TABLE . " topics
@@ -115,7 +115,7 @@ function get_topic_tags($topic_id, $limit){
 }
 function get_tag_cloud($min_size, $max_size, $col1, $col2, $limit){
 	
-	global $phpEx, $user, $config;
+	global $phpEx, $user, $config, $phpbb_root_path;
 	
 	$tags = get_board_tags($limit);
 	
@@ -127,7 +127,7 @@ function get_tag_cloud($min_size, $max_size, $col1, $col2, $limit){
 		if($spread == 0){
 			$spread = 1;
 		}
-		
+		$tag_cloud = '';
 		$cTools 	= new ColourTools();
 		$gradient	= $cTools->gradient($col1, $col2, $max_count);
 		foreach ($tags as $tag => $count)	{
@@ -140,7 +140,7 @@ function get_tag_cloud($min_size, $max_size, $col1, $col2, $limit){
 			}
 			
 			$tag_cloud .= ' <a style="font-size:'.$size.'px; color:#'.$gradient[$count-1].';" href="'
-							.append_sid($phpbb_root.'phpbb_topic_tagging.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . $tag . '</a> ';
+							.append_sid($phpbb_root_path.'phpbb_topic_tagging.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . $tag . '</a> ';
 							
 		}
 	}else{
