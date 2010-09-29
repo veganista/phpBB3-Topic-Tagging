@@ -317,7 +317,7 @@ class acp_phpbb_topic_tagging
 			$orphans = $db->sql_fetchrow($result);
 					
 			//display mode
-			confirm_box(false, sprintf($user->lang['PTT_ACP_ORPHAN_CONF'], $orphans['count']), $s_hidden_fields);
+			confirm_box(false, sprintf($user->lang['PTT_ACP_ORPHAN_CONF'], $orphans['count']));
 		}
 		
 		$link  = append_sid("index.php", "i=phpbb_topic_tagging&mode=configure");
@@ -334,7 +334,7 @@ class acp_phpbb_topic_tagging
 		global  $db, $template, $user, $phpbb_root_path, $phpbb_admin_path,
 				$phpEx;
 
-		$sql = 'SELECT tags.*, topics.topic_title topic_title FROM ' . TAGS_TABLE . ' tags
+		$sql = 'SELECT tags.*, topics.topic_title topic_title, topics.forum_id FROM ' . TAGS_TABLE . ' tags
 				JOIN ' . TOPICS_TABLE . ' topics ON tags.topic_id = topics.topic_id';
 		
 		$result = $db->sql_query($sql);
@@ -354,7 +354,7 @@ class acp_phpbb_topic_tagging
 						'S_FORM_ACTION' => append_sid($phpbb_admin_path."index.$phpEx", 'i=phpbb_topic_tagging&mode=remove'),		
 		));
 		
-		$this->page_title 	= 'PTT_ACP_VIEW_ALL';	
+		$this->page_title 	= 'PTT_ACP_VIEW_ALL_TITLE';
 		$this->tpl_name		= 'acp_phpbb_topic_tagging_view_all';
 	}
 	
