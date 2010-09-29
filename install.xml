@@ -120,30 +120,26 @@ INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_tag_
                 <find><![CDATA[foreach ($cache->obtain_hooks() as $hook)
 {
 	@include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
-}]]>
-                </find>
+}]]></find>
                 <action type="after-add"><![CDATA[
 //phpbb_topic_tagging MOD
 include($phpbb_root_path . 'includes/functions_phpbb_topic_tagging.' . $phpEx);
 include($phpbb_root_path . 'includes/ColourTools.' . $phpEx);
 $user->add_lang('mods/phpbb_topic_tagging_lang');
-//end phpbb_topic_tagging MOD]]>
-                </action>
+//end phpbb_topic_tagging MOD]]></action>
             </edit>
         </open>
         <open src="posting.php">
             <edit>
                 <find><![CDATA[
-$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);			]]>
-                </find>
+$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);			]]></find>
                 <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 $ptt_tags = request_var('ptt_tags', '');
 if($config['ptt_on'] == 1 && trim($ptt_tags) != ''){
 	//process tags
 	insert_tags($ptt_tags, $data['topic_id']);
 }
-//end phpbb_topic_tagging MOD]]>
-                </action>
+//end phpbb_topic_tagging MOD]]></action>
             </edit>
         </open>
 		
@@ -153,8 +149,7 @@ if($config['ptt_on'] == 1 && trim($ptt_tags) != ''){
 	if (!sizeof($id_ary) && !$search_id)
 	{
 		trigger_error('NO_SEARCH_RESULTS');
-	}]]>
-                </find>
+	}]]></find>
                 <action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
 if($keywords){
 	$tag_results 		= search_tags($keywords);
@@ -188,70 +183,61 @@ if($keywords){
 		)
 	);
 }
-//end phpbb_topic_tagging MOD]]>
-                </action>
+//end phpbb_topic_tagging MOD]]></action>
             </edit>
         </open>
 
         <open src="viewtopic.php">
             <edit>
-                <find><![CDATA[// Does this topic contain a poll?]]>
-                </find>
+                <find><![CDATA[// Does this topic contain a poll?]]></find>
                 <action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
 $template->assign_vars(array(
 		'S_ADD_TAG_ACTION'		=> append_sid("{$phpbb_root_path}phpbb_topic_tagging.$phpEx", 'mode=add_tag'),
 		'TOPIC_TAG_LIST'		=> get_tag_list($topic_id, 0, 'topic'),
 	)
 );
-//end phpbb_topic_tagging MOD]]>
-                </action>
+//end phpbb_topic_tagging MOD]]></action>
             </edit>
         </open>
 
         <open src="includes/constants.php">
             <edit>
-                <find><![CDATA[// Additional tables]]>
-                </find>
+                <find><![CDATA[// Additional tables]]></find>
                 <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 define('TAGS_TABLE',				$table_prefix . 'tags');//end phpbb_topic_tagging MOD
-			]]>
-                </action>
+			]]></action>
             </edit>
         </open>
 
         <open src="includes/functions.php">
             <edit>
                 <find><![CDATA[// application/xhtml+xml not used because of IE
-	header('Content-type: text/html; charset=UTF-8');]]>
-                </find>
+	header('Content-type: text/html; charset=UTF-8');]]></find>
                 <action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
     $template->assign_vars(array(
         'S_PHPBB_TOPIC_TAGGING_ON'		=> ($config['ptt_on'] == 1 ? true : false),
         'TAG_CLOUD'				=> get_tag_cloud($config['ptt_min_font'], $config['ptt_max_font'], $config['ptt_colour1'], $config['ptt_colour2'], $config['ptt_tags'])
     ));
-    //end phpbb_topic_tagging MOD]]>
-                </action>
+    //end phpbb_topic_tagging MOD]]></action>
             </edit>
         </open>
 	
         <open src="language/en/common.php">
             <edit>
-                <find><![CDATA[));]]>
-                </find>
+                <find><![CDATA[));]]></find>
+                
                 <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 $lang = array_merge($lang, array(
 		'PTT_SEARCH_TAGS'			=>	'Search tags'
 ));
-//end phpbb_topic_tagging MOD]]>
-                </action>
+//end phpbb_topic_tagging MOD]]></action>
             </edit>
         </open>
 
         <open src="language/en/acp/common.php">
             <edit>
                 <find><![CDATA[	'LOG_WORD_EDIT'			=> '<strong>Edited word censor</strong><br />» %s',
-));]]>
-                </find>
+));]]></find>
                 <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 $lang = array_merge($lang, array(
 		'PTT_MANAGE'		=> 'Manage',
@@ -261,29 +247,25 @@ $lang = array_merge($lang, array(
 		'PTT_CLEAR_ORPHANS'	=> 'Clear Orphans',
 		'PTT_VIEW_ALL'		=> 'View All Tags',
 ));
-//end phpbb_topic_tagging MOD]]>
-                </action>
+//end phpbb_topic_tagging MOD]]></action>
             </edit>
         </open>
 
         <open src="styles/prosilver/template/overall_header.html">
             <edit>
-                <find><![CDATA[
-        <!-- IF S_BOARD_DISABLED and S_USER_LOGGED_IN and (U_MCP or U_ACP) -->
+                <find><![CDATA[<!-- IF S_BOARD_DISABLED and S_USER_LOGGED_IN and (U_MCP or U_ACP) -->
 		<div id="information" class="rules">
 			<div class="inner"><span class="corners-top"><span></span></span>
 				<strong>{L_INFORMATION}:</strong> {L_BOARD_DISABLED}
 			<span class="corners-bottom"><span></span></span></div>
 		</div>
-		<!-- ENDIF -->]]>
-                </find>
+		<!-- ENDIF -->]]></find>
                 <action type="after-add"><![CDATA[
         <!-- IF TAG_CLOUD and S_PHPBB_TOPIC_TAGGING_ON -->
             <!-- phpbb_topic_tagging mod -->
                 <!-- INCLUDE phpbb_topic_tagging_tagcloud.html -->
             <!-- end phpbb_topic_tagging mod -->
-        <!-- ENDIF -->]]>
-                </action>
+        <!-- ENDIF -->]]></action>
             </edit>
         </open>
 
@@ -295,49 +277,41 @@ $lang = array_merge($lang, array(
 <!-- IF S_PHPBB_TOPIC_TAGGING_ON and S_NEW_MESSAGE -->
 panels[panels.length] = 'phpbb_topic_tagging-panel';
 <!-- ENDIF -->
-//end phpbb_topic_tagging MOD]]>
-                </action>
+//end phpbb_topic_tagging MOD]]></action>
             </edit>
         </open>
 	
         <open src="styles/prosilver/template/posting_editor.html">
             <edit>
-                <find><![CDATA[<!-- IF S_SHOW_POLL_BOX || S_POLL_DELETE --><li id="poll-panel-tab"><a href="#tabs" onclick="subPanels('poll-panel'); return false;"><span>{L_ADD_POLL}</span></a></li><!-- ENDIF -->]]>
-                </find>
+                <find><![CDATA[<!-- IF S_SHOW_POLL_BOX || S_POLL_DELETE --><li id="poll-panel-tab"><a href="#tabs" onclick="subPanels('poll-panel'); return false;"><span>{L_ADD_POLL}</span></a></li><!-- ENDIF -->]]></find>
                 <action type="after-add"><![CDATA[<!-- phpbb_topic_tagging mod -->
 <!-- IF S_PHPBB_TOPIC_TAGGING_ON and S_NEW_MESSAGE --><li id="phpbb_topic_tagging-panel-tab"><a href="#tabs" onclick="subPanels('phpbb_topic_tagging-panel'); return false;"><span>{L_PTT_ADD_TAGS}</span></a></li>
 	<!-- ENDIF -->
-<!-- end phpbb_topic_tagging mod -->]]>
-                </action>
+<!-- end phpbb_topic_tagging mod -->]]></action>
             </edit>
         </open>
 	
         <open src="styles/prosilver/template/posting_layout.html">
             <edit>
-                <find><![CDATA[<!-- IF S_DISPLAY_REVIEW --><!-- INCLUDE posting_topic_review.html --><!-- ENDIF -->]]>
-                </find>
+                <find><![CDATA[<!-- IF S_DISPLAY_REVIEW --><!-- INCLUDE posting_topic_review.html --><!-- ENDIF -->]]></find>
                 <action type="after-add"><![CDATA[<!-- phpbb_topic_tagging MOD -->
 <!-- IF S_PHPBB_TOPIC_TAGGING_ON and S_NEW_MESSAGE --><!-- INCLUDE phpbb_topic_tagging_posting_tag_input.html --><!-- ENDIF -->
-<!-- end phpbb_topic_tagging mod -->]]>
-                </action>
+<!-- end phpbb_topic_tagging mod -->]]></action>
             </edit>
         </open>
 
         <open src="styles/prosilver/template/search_results.html">
             <edit>
-                <find><![CDATA[<!-- INCLUDE overall_header.html -->]]>
-                </find>
+                <find><![CDATA[<!-- INCLUDE overall_header.html -->]]></find>
                 <action type="after-add"><![CDATA[<!-- phpbb_topic_tagging MOD -->
 <!-- INCLUDE phpbb_topic_tagging_search_tags.html -->
-<!-- end phpbb_topic_tagging MOD -->]]>
-                </action>
+<!-- end phpbb_topic_tagging MOD -->]]></action>
             </edit>
         </open>
 	
         <open src="styles/prosilver/template/viewtopic_body.html">
             <edit>
-                <find><![CDATA[<!-- INCLUDE jumpbox.html -->]]>
-                </find>
+                <find><![CDATA[<!-- INCLUDE jumpbox.html -->]]></find>
                 <action type="before-add"><![CDATA[<!-- phpbb_topic_tagging mod -->
 <!-- IF TOPIC_TAG_LIST and S_PHPBB_TOPIC_TAGGING_ON -->
 	<h3>{L_PTT_TOPIC_TAGS}</h3>
@@ -346,19 +320,16 @@ panels[panels.length] = 'phpbb_topic_tagging-panel';
 <!-- IF not S_IS_BOT and S_USER_LOGGED_IN and S_PHPBB_TOPIC_TAGGING_ON -->
 	<!-- INCLUDE phpbb_topic_tagging_input.html -->
 <!-- ENDIF -->
-<!-- end phpbb_topic_tagging mod -->]]>
-                </action>
+<!-- end phpbb_topic_tagging mod -->]]></action>
             </edit>
         </open>
 
         <open src="styles/prosilver/theme/stylesheet.css">
             <edit>
-                <find><![CDATA[@import url("colours.css");]]>
-                </find>
+                <find><![CDATA[@import url("colours.css");]]></find>
                 <action type="after-add"><![CDATA[/* phpbb_topic_tagging MOD */
 @import url("phpbb_topic_tagging.css");
-/* end phpbb_topic_tagging MOD */]]>
-                </action>
+/* end phpbb_topic_tagging MOD */]]></action>
             </edit>
         </open>
     </action-group>

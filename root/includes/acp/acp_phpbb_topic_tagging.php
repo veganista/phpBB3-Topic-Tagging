@@ -203,7 +203,7 @@ class acp_phpbb_topic_tagging
             );
 
             foreach($tag_sorts_options as $row){
-                $template->assign_block_vars('tag_sorts_options', array(
+                $template->assign_block_vars('tag_sort_options', array(
                             'NAME'          => $row['name'],
                             'VALUE'			=> $row['value'],
                             'SELECTED'   	=> $config['ptt_tag_sort'] == $row['value'] ? ' selected' : '',
