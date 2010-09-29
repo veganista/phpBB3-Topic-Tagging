@@ -131,6 +131,8 @@ class acp_phpbb_topic_tagging
 					'ptt_min_font'		 => array('lang' => '', 'validate' => 'int',  	'type' => 'text:5:5', 		'explain' => false),
 					'ptt_colour1'		 => array('lang' => '', 'validate' => 'string', 'type' => 'text:0:7', 		'explain' => false),
 					'ptt_colour2'		 => array('lang' => '', 'validate' => 'string', 'type' => 'text:0:7', 		'explain' => false),
+					'ptt_tag_sort'		 => array('lang' => '', 'validate' => 'string', 'type' => 'text',    		'explain' => false),
+
 				)
 			);
 			
@@ -193,6 +195,21 @@ class acp_phpbb_topic_tagging
 						'COLOUR2'				=>  $data['ptt_colour2'],
 				)
 			);			
+
+            $tag_sorts_options = array(
+                array('name' => $user->lang['PTT_ACP_TAG_SORT_DEFAULT'], 'value' => 'alphabetical'),
+                array('name' => $user->lang['PTT_ACP_TAG_SORT_POPULAR'], 'value' => 'popular'),
+                array('name' => $user->lang['PTT_ACP_TAG_SORT_RANDOM'],  'value' => 'random'),
+            );
+
+            foreach($tag_sorts_options as $row){
+                $template->assign_block_vars('tag_sorts_options', array(
+                            'NAME'          => $row['name'],
+                            'VALUE'			=> $row['value'],
+                            'SELECTED'   	=> $config['ptt_tag_sort'] == $row['value'] ? ' selected' : '',
+
+                    ));
+            }
 
 			$this->page_title 	= 'PTT_ACP_CONFIGURE_TITLE';	
 			$this->tpl_name		= 'acp_phpbb_topic_tagging_configure';

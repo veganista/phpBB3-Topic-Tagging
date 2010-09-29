@@ -107,7 +107,14 @@ $lang = array_merge($lang, array(
 	'PTT_ACP_ORPHAN_CONF'			=> 'Are you sure you want to remove all %s orphans?',
     'PTT_ACP_VIEW_ALL_TITLE'        => 'View All Tags',
     'PTT_ACP_REMOVE_TITLE'          => 'Remove',
-	
+    'PTT_ACP_TAG_SORT'              => 'Tag Cloud Sorting',
+    'PTT_ACP_TAG_SORT_EXPLAIN'      => 'You can order the way tags are displayed in the cloud a number of ways',
+	'PTT_ACP_TAG_SORT_DEFAULT'      => 'Default',
+	'PTT_ACP_TAG_SORT_RANDOM'       => 'Random',
+	'PTT_ACP_TAG_SORT_POPULAR'      => 'Most Popular',
+
+
+
 	//error messages
 	'TOO_SMALL_TAGS'				=> 'The number of tags in the cloud must be at least 1',
 	'TOO_SMALL_PTT_MIN_FONT'		=> 'The minimum font size must be at least 1',

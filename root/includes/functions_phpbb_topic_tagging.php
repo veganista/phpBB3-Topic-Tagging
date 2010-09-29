@@ -97,6 +97,8 @@ function get_topic_tags($topic_id, $limit){
 			WHERE t.topic_id = $topic_id
 			GROUP BY t.tag";
 
+    $sql = get_cloud_sort($sql);
+
 	if($limit > 0){
 		$result = $db->sql_query_limit($sql, $limit, 0);
 	}else{
@@ -113,6 +115,23 @@ function get_topic_tags($topic_id, $limit){
 
 	return $tag_array;
 }
+
+function get_cloud_sort($sql){
+    switch($config['ptt_tag_sort']){
+        case 'random':
+            $sql .= " ORDER BY RAND()";
+        break;
+        case 'popular':
+            $sql .= ' ORDER BY tag_count DESC';
+        case 'alphabetical':
+        default:
+            $sql .= " ORDER BY t.tag";
+        break;
+    }
+
+    return $sql;
+}
+
 function get_tag_cloud($min_size, $max_size, $col1, $col2, $limit){
 	
 	global $phpEx, $user, $config, $phpbb_root_path;
