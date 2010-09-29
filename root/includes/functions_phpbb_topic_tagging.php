@@ -57,11 +57,8 @@ function insert_tag($tag, $topic_id){
 	}
 	else
 	{
-			
 		$sql = "INSERT INTO " . TAGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_array);
-				
 		$db->sql_query($sql);
-		
 		return true;
 	}
 }
@@ -72,6 +69,9 @@ function get_board_tags($limit){
 	$sql = "SELECT t.tag, COUNT(*) tag_count
 			FROM " . TAGS_TABLE . " t, " . TOPICS_TABLE . " topics
 			GROUP BY t.tag";
+
+    $sql = get_cloud_sort($sql);
+
 	if($limit > 0){
 		$result = $db->sql_query_limit($sql, $limit, 0);
 	}else{
@@ -117,12 +117,16 @@ function get_topic_tags($topic_id, $limit){
 }
 
 function get_cloud_sort($sql){
+
+    global $config;
+
     switch($config['ptt_tag_sort']){
         case 'random':
             $sql .= " ORDER BY RAND()";
         break;
         case 'popular':
             $sql .= ' ORDER BY tag_count DESC';
+        break;
         case 'alphabetical':
         default:
             $sql .= " ORDER BY t.tag";
@@ -331,7 +335,7 @@ function get_tag_cloud($type = 'board', $id = -1, $min_size = 8, $max_size = 26,
 */
 function get_num_rows($tags){
 
-	global $db;
+	global $db, $config;
 
 	$end = $config['topics_per_page'];
 	$tag_array = filter_tags($tags);
@@ -355,6 +359,7 @@ function get_num_rows($tags){
 			topi.topic_views,
 			topi.topic_title,
 			topi.icon_id,
+            topi.poll_start,
 			topi.topic_attachment,
 			topi.topic_first_poster_name,
 			COUNT(topi.topic_id) count
@@ -400,6 +405,7 @@ function get_num_rows($tags){
 			 topi.topic_views,
 			 topi.topic_title,
 			 topi.icon_id,
+             topi.poll_start,
 			 topi.topic_attachment,
 			 topi.topic_first_poster_name
 			 ORDER BY count DESC";

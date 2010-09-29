@@ -217,7 +217,22 @@ class acp_phpbb_topic_tagging
 		}
 		else
 		{
-					
+
+            $tag_sort_options = array(
+                array('name' => $user->lang['PTT_ACP_TAG_SORT_DEFAULT'], 'value' => 'alphabetical'),
+                array('name' => $user->lang['PTT_ACP_TAG_SORT_POPULAR'], 'value' => 'popular'),
+                array('name' => $user->lang['PTT_ACP_TAG_SORT_RANDOM'],  'value' => 'random'),
+            );
+
+            foreach($tag_sort_options as $row){
+                $template->assign_block_vars('tag_sort_options', array(
+                            'NAME'          => $row['name'],
+                            'VALUE'			=> $row['value'],
+                            'SELECTED'   	=> $config['ptt_tag_sort'] == $row['value'] ? ' selected' : '',
+
+                    ));
+            }
+
 			$template->assign_vars(array(
 						'S_TAGS_ON'				=> ($config['ptt_on'] == 1 ? true : false),
 						'TAG_AMOUNT'			=>  $config['ptt_tags'],
