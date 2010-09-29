@@ -269,8 +269,6 @@ $lang = array_merge($lang, array(
         <open src="styles/prosilver/template/overall_header.html">
             <edit>
                 <find><![CDATA[
-	<a name="start_here"></a>
-	<div id="page-body">
         <!-- IF S_BOARD_DISABLED and S_USER_LOGGED_IN and (U_MCP or U_ACP) -->
 		<div id="information" class="rules">
 			<div class="inner"><span class="corners-top"><span></span></span>
