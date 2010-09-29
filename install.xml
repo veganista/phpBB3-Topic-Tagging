@@ -79,6 +79,9 @@ INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_colo
         <sql dbms="mysql">
 INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_colour2', '#779FBF', '0');
         </sql>
+        <sql dbms="mysql">
+INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_tag_sort', 'random', '0');
+        </sql>
         <copy>
             <file from="root/phpbb_topic_tagging.php" to="phpbb_topic_tagging.php" />
             <file from="root/phpbb_topic_tagging.js" to="phpbb_topic_tagging.js" />
@@ -114,15 +117,17 @@ INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_colo
 
         <open src="common.php">
             <edit>
-                <find><![CDATA[?>]]>
+                <find><![CDATA[foreach ($cache->obtain_hooks() as $hook)
+{
+	@include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
+}]]>
                 </find>
-                <action type="before-add"><![CDATA[
+                <action type="after-add"><![CDATA[
 //phpbb_topic_tagging MOD
 include($phpbb_root_path . 'includes/functions_phpbb_topic_tagging.' . $phpEx);
 include($phpbb_root_path . 'includes/ColourTools.' . $phpEx);
 $user->add_lang('mods/phpbb_topic_tagging_lang');
-//end phpbb_topic_tagging MOD
-			]]>
+//end phpbb_topic_tagging MOD]]>
                 </action>
             </edit>
         </open>
@@ -137,7 +142,7 @@ if($config['ptt_on'] == 1 && trim($ptt_tags) != ''){
 	//process tags
 	insert_tags($ptt_tags, $data['topic_id']);
 }
-//end phpbb_topic_tagging MOD	]]>
+//end phpbb_topic_tagging MOD]]>
                 </action>
             </edit>
         </open>
@@ -183,7 +188,7 @@ if($keywords){
 		)
 	);
 }
-//end phpbb_topic_tagging MOD	]]>
+//end phpbb_topic_tagging MOD]]>
                 </action>
             </edit>
         </open>
@@ -244,9 +249,10 @@ $lang = array_merge($lang, array(
 
         <open src="language/en/acp/common.php">
             <edit>
-                <find><![CDATA[?>]]>
+                <find><![CDATA[	'LOG_WORD_EDIT'			=> '<strong>Edited word censor</strong><br />» %s',
+));]]>
                 </find>
-                <action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
+                <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 $lang = array_merge($lang, array(
 		'PTT_MANAGE'		=> 'Manage',
 		'PTT_CONFIGURE'		=> 'Configure',
@@ -275,8 +281,7 @@ $lang = array_merge($lang, array(
             <!-- phpbb_topic_tagging mod -->
                 <!-- INCLUDE phpbb_topic_tagging_tagcloud.html -->
             <!-- end phpbb_topic_tagging mod -->
-        <!-- ENDIF -->
-			]]>
+        <!-- ENDIF -->]]>
                 </action>
             </edit>
         </open>
