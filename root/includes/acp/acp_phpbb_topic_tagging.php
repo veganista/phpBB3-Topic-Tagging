@@ -196,13 +196,13 @@ class acp_phpbb_topic_tagging
 				)
 			);			
 
-            $tag_sorts_options = array(
+            $tag_sort_options = array(
                 array('name' => $user->lang['PTT_ACP_TAG_SORT_DEFAULT'], 'value' => 'alphabetical'),
                 array('name' => $user->lang['PTT_ACP_TAG_SORT_POPULAR'], 'value' => 'popular'),
                 array('name' => $user->lang['PTT_ACP_TAG_SORT_RANDOM'],  'value' => 'random'),
             );
 
-            foreach($tag_sorts_options as $row){
+            foreach($tag_sort_options as $row){
                 $template->assign_block_vars('tag_sort_options', array(
                             'NAME'          => $row['name'],
                             'VALUE'			=> $row['value'],
