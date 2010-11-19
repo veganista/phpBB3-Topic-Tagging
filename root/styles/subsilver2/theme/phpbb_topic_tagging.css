@@ -16,7 +16,7 @@
 	overflow: auto;	
 	clear:right;
 	width:100%;
-	height:95px;	
+	height:95px;
 }
 .suggestions_loading{
 	float:left;
@@ -29,10 +29,11 @@
 	overflow: auto;	
 	clear:right;
 	width:100%;
-	height:95px;	
+	height:95px;
 }		
 .suggest_posting{
-	width: 85%;
+	width: 300px;
+    margin-left:20px;
 }
 
 #tags{

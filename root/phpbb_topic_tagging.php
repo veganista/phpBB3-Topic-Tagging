@@ -18,6 +18,7 @@ include($phpbb_root_path . 'common.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 
+$icons = $cache->obtain_icons();
 
 // Start session management
 $user->session_begin();
@@ -82,7 +83,7 @@ switch($mode){
 			$result_set = search_tags($search_tag, $start);
 
 			$topics_count = get_num_rows($search_tag);
-
+            $s_type_switch = 0;
 			if ($topics_count > 0)
 			{
 				foreach ($result_set as $row)
@@ -149,6 +150,8 @@ switch($mode){
 						'ATTACH_ICON_IMG'		=> ($auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
 						'UNAPPROVED_IMG'		=> ($topic_unapproved || $posts_unapproved) ? $user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
 
+                        
+
 						'S_TOPIC_TYPE'			=> $row['topic_type'],
 						'S_USER_POSTED'			=> (isset($row['topic_posted']) && $row['topic_posted']) ? true : false,
 						'S_UNREAD_TOPIC'		=> $unread_topic,
@@ -170,8 +173,11 @@ switch($mode){
 						'U_MCP_REPORT'			=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=reports&amp;f=' . $forum_id . '&amp;t=' . $topic_id, true, $user->session_id),
 						'U_MCP_QUEUE'			=> $u_mcp_queue,
 
-						'TAG_LIST'				=> get_tag_list($topic_id, 20))
-					);
+						'TAG_LIST'				=> get_tag_list($topic_id, 20),
+                        'S_TOPIC_TYPE_SWITCH'	=> ($s_type_switch == $s_type_switch_test) ? -1 : $s_type_switch_test)
+                    );
+
+                    $s_type_switch = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
 				}
 				$template->assign_vars(array(
 					'PAGINATION'	=> generate_pagination(append_sid("{$phpbb_root_path}phpbb_topic_tagging.$phpEx","tag=$search_tag"), $topics_count, $config['topics_per_page'], $start),
@@ -180,6 +186,8 @@ switch($mode){
 					'S_DISPLAY_SEARCHBOX'		=> true,
 					'S_TAG_SEARCH_ACTION'		=> append_sid("{$phpbb_root_path}phpbb_topic_tagging.{$phpEx}", 'mode=search'),
 					'S_SEARCH_STRING'			=> $search_tag,
+                    //'S_TOPIC_ICONS'			=> ($s_display_active && sizeof($active_forum_ary)) ? max($active_forum_ary['enable_icons']) : (($forum_data['enable_icons']) ? true : false),
+
 					//'TAG_CLOUD'					=> get_tag_cloud()
 					)
 				);
