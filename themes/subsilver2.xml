@@ -133,11 +133,8 @@ INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_tag_
 
         <open src="common.php">
             <edit>
-                <find><![CDATA[foreach ($cache->obtain_hooks() as $hook)
-{
-	@include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
-}]]></find>
-                <action type="after-add"><![CDATA[
+                <find><![CDATA[?>]]></find>
+                <action type="before-add"><![CDATA[
 //phpbb_topic_tagging MOD
 include($phpbb_root_path . 'includes/functions_phpbb_topic_tagging.' . $phpEx);
 include($phpbb_root_path . 'includes/ColourTools.' . $phpEx);
@@ -147,8 +144,7 @@ $user->add_lang('mods/phpbb_topic_tagging_lang');
         </open>
         <open src="posting.php">
             <edit>
-                <find><![CDATA[
-$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);			]]></find>
+                <find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find>
                 <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
 $ptt_tags = request_var('ptt_tags', '');
 if($config['ptt_on'] == 1 && trim($ptt_tags) != ''){
@@ -161,11 +157,7 @@ if($config['ptt_on'] == 1 && trim($ptt_tags) != ''){
 
         <open src="search.php">
             <edit>
-                <find><![CDATA[	// For some searches we need to print out the "no results" page directly to allow re-sorting/refining the search options.
-	if (!sizeof($id_ary) && !$search_id)
-	{
-		trigger_error('NO_SEARCH_RESULTS');
-	}]]></find>
+                <find><![CDATA[$sql_where = '';]]></find>
                 <action type="before-add"><![CDATA[//phpbb_topic_tagging MOD
 if($keywords){
 	$tag_results 		= search_tags($keywords);
@@ -249,7 +241,7 @@ $lang = array_merge($lang, array(
 //end phpbb_topic_tagging MOD]]></action>
             </edit>
         </open>
-
+        
         <open src="language/en/acp/common.php">
             <edit>
                 <find><![CDATA[	'LOG_WORD_EDIT'			=> '<strong>Edited word censor</strong><br />» %s',
