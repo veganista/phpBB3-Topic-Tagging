@@ -18,11 +18,7 @@
             </author>
         </author-group>
 	
-<<<<<<< HEAD
-        <mod-version>1.0.2b</mod-version>
-=======
-        <mod-version>1.0.2</mod-version>
->>>>>>> development
+        <mod-version>1.0.3</mod-version>
 
         <installation>
             <level>easy</level>
