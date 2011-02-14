@@ -18,15 +18,29 @@
             </author>
         </author-group>
 	
+<<<<<<< HEAD
         <mod-version>1.0.2b</mod-version>
+=======
+        <mod-version>1.0.2</mod-version>
+>>>>>>> development
 
         <installation>
             <level>easy</level>
             <time>600</time>
-            <target-version>3.0.7-PL1</target-version>
+            <target-version>3.0.8</target-version>
         </installation>
 		
         <history>
+
+            <entry>
+                <date>20101-02-14</date>
+                <rev-version>1.0.3</rev-version>
+                <changelog lang="en-GB">
+                    <change>Updated to phpBB3 version 3.0.8</change>
+                    <change>Deprecated messages fixed</change>
+                    <change>Added better language support</change>
+                </changelog>
+            </entry>
 
             <entry>
                 <date>2010-11-19</date>
@@ -51,7 +65,7 @@
 
             <entry>
                 <date>2008-07-30</date>
-                <rev-version>1.0.0a</rev-version>
+                <rev-version>1.0.1a</rev-version>
                 <changelog lang="en-GB">
                     <change>Restart of old project, files can still be found at http://www.nanothree.net/phpbb/forum/mods/</change>
                     <change>Better integration of search</change>
@@ -71,11 +85,13 @@
     <action-group>
     <!-- ACTIONS GO HERE -->
         <sql dbms="mysql">
-CREATE TABLE phpbb_tags (
-  topic_id int NOT NULL,
-  tag varchar(255) NOT NULL,
-  PRIMARY KEY  (topic_id,tag)
-);
+
+CREATE TABLE IF NOT EXISTS `phpbb_tags` (
+  `topic_id` int(11) NOT NULL,
+  `tag` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`topic_id`,`tag`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
         </sql>
         <sql dbms="mysql">
 INSERT INTO phpbb_config (config_name,config_value,is_dynamic) VALUES ('ptt_on', '1', '0');
@@ -146,7 +162,7 @@ $user->add_lang('mods/phpbb_topic_tagging_lang');
             <edit>
                 <find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find>
                 <action type="after-add"><![CDATA[//phpbb_topic_tagging MOD
-$ptt_tags = request_var('ptt_tags', '');
+$ptt_tags = request_var('ptt_tags', '', true);
 if($config['ptt_on'] == 1 && trim($ptt_tags) != ''){
 	//process tags
 	insert_tags($ptt_tags, $data['topic_id']);
