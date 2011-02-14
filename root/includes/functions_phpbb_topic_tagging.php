@@ -17,7 +17,7 @@ if (!defined('IN_PHPBB'))
 function insert_tags($tags, $topic_id){
 	
 	$outcome 	= array('added' => 0, 'dups' => 0);
-	$tag_array  = split(',', $tags);
+	$tag_array  = explode(',', $tags);
 	
 	for($i = 0; $i < sizeof($tag_array); $i++)
 	{
