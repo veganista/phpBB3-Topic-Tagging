@@ -1,8 +1,8 @@
 <?php
-/**
+/** 
 *
 * @package phpbb_topic_tagging
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
 */
 
@@ -15,10 +15,10 @@ if (!defined('IN_PHPBB'))
 }
 
 function insert_tags($tags, $topic_id){
-
+	
 	$outcome 	= array('added' => 0, 'dups' => 0);
 	$tag_array  = explode(',', $tags);
-
+	
 	for($i = 0; $i < sizeof($tag_array); $i++)
 	{
 		if(insert_tag(str_replace('"', '', trim($tag_array[$i])), $topic_id)){
@@ -26,11 +26,11 @@ function insert_tags($tags, $topic_id){
 		}else{
 			$outcome['dups']++;
 		}
-
+		
 	}
-
+	
 	return $outcome;
-
+	
 }
 
 function insert_tag($tag, $topic_id){
@@ -38,16 +38,16 @@ function insert_tag($tag, $topic_id){
 
 	$sql_array = array('tag' 		=> $tag,
 					   'topic_id' 	=> $topic_id);
-
+	
 	if(trim($tag) == '')
 	{
 	 	//exit right away
 	 	return false;
 	}
-
+	
 	$sql = 'SELECT *
 	FROM ' . TAGS_TABLE . " WHERE " . $db->sql_build_array('SELECT', $sql_array);
-
+	
 	$result = $db->sql_query($sql);
 
 	$row = $db->sql_fetchrow($result);
@@ -64,11 +64,12 @@ function insert_tag($tag, $topic_id){
 }
 function get_board_tags($limit){
 
-	global $db, $config;
+	global $db, $config, $auth;
 
-	$sql = "SELECT t.tag, COUNT(*) tag_count
-			FROM " . TAGS_TABLE . " t, " . TOPICS_TABLE . " topics
-			GROUP BY t.tag";
+	$sql = "SELECT t.*, topics.forum_id
+			FROM " . TAGS_TABLE . " t 
+            JOIN " . TOPICS_TABLE . " topics ON t.topic_id = topics.topic_id
+			";
 
     $sql = get_cloud_sort($sql);
 
@@ -77,26 +78,37 @@ function get_board_tags($limit){
 	}else{
 		$result = $db->sql_query($sql);
 	}
-
-	$result_set = $db->sql_fetchrowset($result);
-
-	$tag_array	= array();
-
+	
+/*
 	for($i = 0; $i < sizeof($result_set); $i++){
 		$tag_array[$result_set[$i]['tag']] = $result_set[$i]['tag_count'];
 	}
+ *
+ */
+	$tag_list = array();
 
-	return $tag_array;
+	while ($row = $db->sql_fetchrow($result)){
+
+        // Do not include those topics the user has no permission to access
+		if ($auth->acl_get('f_read', $row['forum_id'])){
+			if(isset($tag_list[$row['tag']])){
+                $tag_list[$row['tag']] += 1;
+            }else{
+                $tag_list[$row['tag']] = 1;
+            }
+		}
+    }
+
+	return $tag_list;
 }
 function get_topic_tags($topic_id, $limit){
 
-	global $db, $config;
+	global $db, $config, $auth;
 
-	$sql = "SELECT t.tag, COUNT(*) tag_count
-			FROM " . TAGS_TABLE . " t, " . TOPICS_TABLE . " topics
-			WHERE t.topic_id = $topic_id
-			GROUP BY t.tag";
-
+	$sql = "SELECT t.*, topics.forum_id
+			FROM " . TAGS_TABLE . " t
+            JOIN " . TOPICS_TABLE . " topics ON t.topic_id = topics.topic_id
+			";
     $sql = get_cloud_sort($sql);
 
 	if($limit > 0){
@@ -104,16 +116,22 @@ function get_topic_tags($topic_id, $limit){
 	}else{
 		$result = $db->sql_query($sql);
 	}
+	
+	$tag_list = array();
 
-	$result_set = $db->sql_fetchrowset($result);
+	while ($row = $db->sql_fetchrow($result)){
 
-	$tag_array	= array();
+        // Do not include those topics the user has no permission to access
+		if ($auth->acl_get('f_read', $row['forum_id'])){
+			if(isset($tag_list[$row['tag']])){
+                $tag_list[$row['tag']] += 1;
+            }else{
+                $tag_list[$row['tag']] = 1;
+            }
+		}
+    }
 
-	for($i = 0; $i < sizeof($result_set); $i++){
-		$tag_array[$result_set[$i]['tag']] = $result_set[$i]['tag_count'];
-	}
-
-	return $tag_array;
+	return $tag_list;
 }
 
 function get_cloud_sort($sql){
@@ -137,16 +155,16 @@ function get_cloud_sort($sql){
 }
 
 function get_tag_cloud($min_size, $max_size, $col1, $col2, $limit){
-
+	
 	global $phpEx, $user, $config, $phpbb_root_path;
-
+	
 	$tags = get_board_tags($limit);
-
+	
 	if(sizeof($tags) > 0){
 		$min_count = min(array_values($tags));
 		$max_count = max(array_values($tags));
 		$spread = $max_count - $min_count;
-
+			
 		if($spread == 0){
 			$spread = 1;
 		}
@@ -155,36 +173,36 @@ function get_tag_cloud($min_size, $max_size, $col1, $col2, $limit){
 		$gradient	= $cTools->gradient($col1, $col2, $max_count);
 		foreach ($tags as $tag => $count)	{
 			$size = $min_size + ($count - $min_count) * ($max_size - $min_size) / $spread;
-
+			
 			$tag_param = $tag;
-
+			
 			if(strpos($tag, ' ') !== false){
 				$tag_param = '&quot;' . urlencode($tag) . '&quot;';
 			}
-
+			
 			$tag_cloud .= ' <a style="font-size:'.$size.'px; color:#'.$gradient[$count-1].';" href="'
 							.append_sid($phpbb_root_path.'phpbb_topic_tagging.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . $tag . '</a> ';
-
+							
 		}
 	}else{
-		$tag_cloud = false;
+		$tag_cloud = false;		
 	}
-
+	
 	return $tag_cloud;
 }
 
 function get_tag_list($topic_id, $limit, $type = 'topic', $admin = false){
 	global $phpbb_root_path, $phpEx, $user;
-
+	
 	$tag_list = "";
-
+	
 	$tags = get_topic_tags($topic_id, $limit);
 	if(sizeof($tags) > 0)
 	{
 		foreach ($tags as $tag => $count)
 		{
 			$tag_param = $tag;
-
+			
 			if(strpos($tag, ' ') !== false)
 			{
 				$tag_param = '&quot;' . urlencode($tag) . '&quot;';
@@ -192,17 +210,17 @@ function get_tag_list($topic_id, $limit, $type = 'topic', $admin = false){
 			if($admin){
 			//$tag_list .= '<a class="tag-list-del" href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>';
 			}
-			$tag_list .= '<a href="'.append_sid($phpbb_root_path.'phpbb_topic_tagging.'.$phpEx, 'mode=search&tag='.$tag_param).'">' .
+			$tag_list .= '<a href="'.append_sid($phpbb_root_path.'phpbb_topic_tagging.'.$phpEx, 'mode=search&tag='.$tag_param).'">' . 
 							$tag . '</a>, ';
 		}
 		$tag_list = substr($tag_list, 0, -2);
 	}
 	else
 	{
-
-		$tag_list = false;
+		
+		$tag_list = false;		
 	}
-
+		
 	return $tag_list;
 }
 
@@ -335,7 +353,7 @@ function get_tag_cloud($type = 'board', $id = -1, $min_size = 8, $max_size = 26,
 */
 function get_num_rows($tags){
 
-	global $db, $config;
+	global $db, $config, $auth;
 
 	$end = $config['topics_per_page'];
 	$tag_array = filter_tags($tags);
@@ -415,10 +433,17 @@ function get_num_rows($tags){
 		message_die(GENERAL_ERROR, 'Error retrieving search results', '', __LINE__, __FILE__, $sql);
 	}
 	
-	$result_set = $db->sql_fetchrowset($result);
-	$db->sql_freeresult($result);
+	$topic_list = array();
 
-	return sizeof($result_set);
+	while ($row = $db->sql_fetchrow($result)){
+
+    		// Do not include those topics the user has no permission to access
+		if ($auth->acl_get('f_read', $row['forum_id'])){
+			$topic_list[] = $row;
+		}
+    }
+
+	return sizeof($topic_list);
 	
 	
 	
@@ -426,7 +451,7 @@ function get_num_rows($tags){
 
 function search_tags($tags, $start = 0, $end = false){
 	
-	global $db, $config;
+	global $db, $config, $auth;
 	
 	$topics_count = (int) $db->sql_fetchfield('num_topics');
 
@@ -523,9 +548,17 @@ function search_tags($tags, $start = 0, $end = false){
 		message_die(GENERAL_ERROR, 'Error retrieving search results', '', __LINE__, __FILE__, $sql);
 	}
 	
-	$result_set = $db->sql_fetchrowset($result);
+	$topic_list = array();
 
-	return $result_set;
+	while ($row = $db->sql_fetchrow($result)){
+
+    		// Do not include those topics the user has no permission to access
+		if ($auth->acl_get('f_read', $row['forum_id'])){
+			$topic_list[] = $row;
+		}
+    }
+
+	return $topic_list;
 	
 }
 
