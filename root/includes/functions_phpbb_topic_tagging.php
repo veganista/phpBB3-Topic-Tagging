@@ -541,7 +541,7 @@ function search_tags($tags, $start = 0, $end = false){
 			 topi.topic_last_post_subject,
 			 topi.topic_last_post_time,
 			 topi.topic_last_view_time
-			 ORDER BY count DESC";
+			 ORDER BY topic_time DESC";
 		
 	if(!($result = $db->sql_query_limit($sql, $end, $start)))
 	{
