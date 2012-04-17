@@ -45,13 +45,13 @@ switch($mode){
 		if(trim($tags) != '')
 		{
 			$tag_outcome = insert_tags($tags, $topic_id);
-			$meta_info = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&t=' . $topic_id);
+			$meta_info = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&amp;t=' . $topic_id);
 			$message = sprintf($user->lang['PTT_ADD_TAGS_DONE'], $tag_outcome['added'], $tag_outcome['dups']) . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
 			meta_refresh(3, $meta_info);
 		}
 		else
 		{
-			$meta_info = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&t=' . $topic_id .'#phpbb_topic_tagging_input');
+			$meta_info = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&amp;t=' . $topic_id .'#phpbb_topic_tagging_input');
 			$message = $user->lang['PTT_ADD_TAGS_NO_TAGS'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
 		}
 
@@ -169,7 +169,7 @@ switch($mode){
 						'U_LAST_POST'			=> $view_topic_url . '&amp;p=' . $row['topic_last_post_id'] . '#p' . $row['topic_last_post_id'],
 						'U_LAST_POST_AUTHOR'	=> get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 						'U_TOPIC_AUTHOR'		=> get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name']),
-						'U_VIEW_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&t=' . $topic_id),
+						'U_VIEW_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&amp;t=' . $topic_id),
 						'U_MCP_REPORT'			=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=reports&amp;f=' . $forum_id . '&amp;t=' . $topic_id, true, $user->session_id),
 						'U_MCP_QUEUE'			=> $u_mcp_queue,
 
@@ -180,9 +180,9 @@ switch($mode){
                     $s_type_switch = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
 				}
 				$template->assign_vars(array(
-					'PAGINATION'	=> generate_pagination(append_sid("{$phpbb_root_path}phpbb_topic_tagging.$phpEx","tag=$search_tag"), $topics_count, $config['topics_per_page'], $start),
-					'PAGE_NUMBER'	=> on_page($topics_count, $config['topics_per_page'], $start),
-					'TOTAL_TOPICS'	=> (true) ? false : (($topics_count == 1) ? $user->lang['PTT_NUM_TOPIC'] : sprintf($user->lang['PTT_NUM_TOPICS'], $topics_count)),
+					'PAGINATION'                => generate_pagination(append_sid("{$phpbb_root_path}phpbb_topic_tagging.$phpEx","tag=$search_tag"), $topics_count, $config['topics_per_page'], $start),
+					'PAGE_NUMBER'               => on_page($topics_count, $config['topics_per_page'], $start),
+					'TOTAL_TOPICS'              => (true) ? false : (($topics_count == 1) ? $user->lang['PTT_NUM_TOPIC'] : sprintf($user->lang['PTT_NUM_TOPICS'], $topics_count)),
 					'S_DISPLAY_SEARCHBOX'		=> true,
 					'S_TAG_SEARCH_ACTION'		=> append_sid("{$phpbb_root_path}phpbb_topic_tagging.{$phpEx}", 'mode=search'),
 					'S_SEARCH_STRING'			=> $search_tag,
