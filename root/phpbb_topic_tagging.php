@@ -63,12 +63,12 @@ switch($mode){
 		if($search_tag == '')
 		{
 			$template->assign_vars(array(
-				'S_TAG_SEARCH_ACTION'		=> append_sid("{$phpbb_root}phpbb_topic_tagging.{$phpEx}", 'mode=search'),
+				'S_TAG_SEARCH_ACTION'		=> append_sid("{$phpbb_root_path}phpbb_topic_tagging.{$phpEx}", 'mode=search'),
 				'S_SEARCH_STRING'			=> $search_tag,
 				//'TAG_CLOUD'					=> get_tag_cloud(),
 				)
 			);
-			page_header($user->lang['PTT_SEARCH_PAGE_TITLE']);
+			page_header($user->lang['PTT_TAGS_RESULT_TITLE']);
 
 			$template->set_filenames(array(
 				'body' => 'phpbb_topic_tagging_search.html')
@@ -191,7 +191,8 @@ switch($mode){
 					//'TAG_CLOUD'					=> get_tag_cloud()
 					)
 				);
-				page_header($user->lang['PTT_TAGS_RESULT_TITLE']);
+                
+                page_header($user->lang['PTT_TAGS_RESULT_TITLE'] . ' - ' . $search_tag);
 
 				$template->set_filenames(array(
 					'body' => 'phpbb_topic_tagging_search_results.html')

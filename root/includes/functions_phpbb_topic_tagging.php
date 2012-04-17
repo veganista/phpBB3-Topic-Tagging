@@ -488,6 +488,7 @@ function search_tags($tags, $start = 0, $end = false){
 			topi.topic_last_post_subject,
 			topi.topic_last_post_time,
 			topi.topic_last_view_time,
+            topi.poll_start,
 			COUNT(topi.topic_id) count
 			FROM ". TAGS_TABLE ." t, ". TOPICS_TABLE ." topi";
 	
