@@ -108,7 +108,7 @@ function get_topic_tags($topic_id, $limit){
 	$sql = "SELECT t.*, topics.forum_id
 			FROM " . TAGS_TABLE . " t
             JOIN " . TOPICS_TABLE . " topics ON t.topic_id = topics.topic_id
-			";
+			WHERE t.topic_id = " . (int)$topic_id;
     $sql = get_cloud_sort($sql);
 
 	if($limit > 0){
